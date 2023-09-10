@@ -1,11 +1,14 @@
-import React from 'react'
-import { Navbar, Container, Nav } from 'react-bootstrap';
-import logo from '../assets/logo.png'
-import styles from '../styles/NavBar.module.css'
-import { NavLink } from 'react-router-dom';
-import { useCurrentUser, useSetCurrentUser} from '../contexts/CurrentUserContext';
-import Avatar from './Avatar';
-import axios from 'axios';
+import React from "react";
+import { Navbar, Container, Nav } from "react-bootstrap";
+import logo from "../assets/logo.png";
+import styles from "../styles/NavBar.module.css";
+import { NavLink } from "react-router-dom";
+import {
+  useCurrentUser,
+  useSetCurrentUser,
+} from "../contexts/CurrentUserContext";
+import Avatar from "./Avatar";
+import axios from "axios";
 import useClickOutsideToggle from '../hooks/useClickOutsideToggle';
 
 
@@ -15,7 +18,7 @@ const NavBar = () => {
     const setCurrentUser = useSetCurrentUser();
 
 
-    const {expanded, setExpanded, ref} = useClickOutsideToggle();
+    const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
     const handleSignOut = async () => {
         try {
@@ -94,7 +97,10 @@ const NavBar = () => {
 
 
     return (
-        <Navbar expanded={expanded} className={styles.NavBar} expand="md" fixed="top">
+        <Navbar expanded={expanded}
+         className={styles.NavBar}
+          expand="md" 
+          fixed="top">
             <Container>
                 <NavLink to="/">
                     <Navbar.Brand href="#home">

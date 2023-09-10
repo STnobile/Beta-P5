@@ -16,7 +16,7 @@
   }
   
   .Button:hover:active {
-    background-color: #a244b7 !important;
+    background-color: #cd6fe2 !important;
   }
   
   .Button:active {
@@ -24,7 +24,7 @@
   }
   
   .Button:focus {
-    background-color: #a244b7;
+    background-color: #d185e2;
   }
   
   .Wide {
@@ -35,7 +35,7 @@
   .Blue,
   .BlueOutline:hover,
   .Bright:hover {
-    background-color: #a244b7;
+    background-color: #610775;
     color: #ffffff;
   }
   
@@ -43,7 +43,7 @@
   .Blue:hover {
     /* border: 1px solid #2142b2; */
     background-color: #ffffff;
-    color: #9c11bb;
+    color: #650b79;
   }
   
   .Black,

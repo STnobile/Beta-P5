@@ -16,7 +16,7 @@ export const useClickOutsideToggle = () => {
         };
     }, [ref]);
 
-  return { expanded, setExpanded, ref};
+  return { expanded, setExpanded, ref };
 };
 
 
