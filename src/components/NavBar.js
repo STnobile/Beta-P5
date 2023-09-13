@@ -1,6 +1,6 @@
 import React from "react";
 import { Navbar, Container, Nav } from "react-bootstrap";
-import logo from "../assets/logo.png";
+import logo from "../assets/logoNr.png";
 import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import {
@@ -14,6 +14,7 @@ import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 const NavBar = () => {
     const currentUser = useCurrentUser();
     const setCurrentUser = useSetCurrentUser();
+    console.log(currentUser)
 
     const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
@@ -96,7 +97,7 @@ const NavBar = () => {
             <Container>
                 <NavLink to="/">
                     <Navbar.Brand>
-                        <img src={logo} alt='logo' height="35" />
+                        <img src={logo} alt='logo' height="55" />
                     </Navbar.Brand>
                 </NavLink>
                 {currentUser && addPostIcon}
