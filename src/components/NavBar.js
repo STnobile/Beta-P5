@@ -10,11 +10,11 @@ import {
 import Avatar from "./Avatar";
 import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
+import { removeTokenTimestamp } from "../utils/utils";
 
 const NavBar = () => {
     const currentUser = useCurrentUser();
     const setCurrentUser = useSetCurrentUser();
-    console.log(currentUser)
 
     const { expanded, setExpanded, ref } = useClickOutsideToggle();
 
@@ -22,6 +22,7 @@ const NavBar = () => {
         try {
             await axios.post("dj-rest-auth/logout/");
             setCurrentUser(null);
+            removeTokenTimestamp();
         } catch (err) {
             console.log(err)
         }
@@ -116,8 +117,9 @@ const NavBar = () => {
                             to="/">
 
                             <i className="fa-solid fa-house-chimney"></i>Home
-                            {currentUser ? loggedInIcons : loggedOutIcons}
                         </NavLink>
+                        
+                        {currentUser ? loggedInIcons : loggedOutIcons}
 
                     </Nav>
                 </Navbar.Collapse>
