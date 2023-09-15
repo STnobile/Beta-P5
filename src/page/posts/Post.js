@@ -37,7 +37,7 @@ const Post = (props) => {
      await axiosRes.delete(`/posts/${id}/`);
      history.goBack();
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   };
 
@@ -53,13 +53,13 @@ const Post = (props) => {
         }),
       }));
     } catch(err){
-      console.log(err)
+     // console.log(err)
     }
   };
 
   const handleUnlike = async () => {
     try {
-     await axiosRes.delete(`/likes/${like_id}/`);
+     await axiosRes.delete(`/likes/${like_id}`);
      setPost((prevPosts) => ({
       ...prevPosts,
       results: prevPosts.results.map((post) => {
@@ -69,7 +69,7 @@ const Post = (props) => {
       }),
      }));
     } catch(err){
-      console.log(err);
+     // console.log(err);
     }
   };
 
@@ -78,7 +78,7 @@ const Post = (props) => {
       <Card.Body>
         <Media className="align-items-center justify-content-between">
           <Link to={`/profiles/${profile_id}`}>
-            <Avatar src={profile_image} height={55} />
+            <Avatar src={profile_image} height={45} />
             {owner}
           </Link>
           <div className="d-flex align-items-center">
