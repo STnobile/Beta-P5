@@ -30,11 +30,11 @@ const Post = (props) => {
 
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`)
-  }
+  };
 
   const handleDelete = async () => {
     try {
-     await axiosRes.delete(`/posts/${id}/`);
+     await axiosRes.delete(`/posts/${id}`);
      history.goBack();
     } catch (err) {
       // console.log(err);
@@ -43,12 +43,13 @@ const Post = (props) => {
 
   const handleLike = async () => {
     try {
-      const {data} = await axiosRes.post('/likes/', {post:id});
-      setPost((prevPosts) =>({
+      const { data } = await axiosRes.post('/likes/', { post:id });
+      // check this 
+      setPost((prevPosts) => ({
         ...prevPosts,
         results: prevPosts.results.map((post) => {
           return post.id === id 
-          ?{...post, likes_count: post.likes_count + 1, like_id: data.id}
+          ?{ ...post, likes_count: post.likes_count + 1, like_id: data.id }
           : post;
         }),
       }));
@@ -59,7 +60,7 @@ const Post = (props) => {
 
   const handleUnlike = async () => {
     try {
-     await axiosRes.delete(`/likes/${like_id}`);
+     await axiosRes.delete(`/likes/${like_id}/`);
      setPost((prevPosts) => ({
       ...prevPosts,
       results: prevPosts.results.map((post) => {
@@ -83,11 +84,11 @@ const Post = (props) => {
           </Link>
           <div className="d-flex align-items-center">
             <span>{updated_at}</span>
-            {is_owner && postPage && 
+            {is_owner && postPage && (
             <MoreDropdown 
             handleEdit={handleEdit} 
             handleDelete={handleDelete}
-            />}
+            />)}
           </div>
         </Media>
       </Card.Body>

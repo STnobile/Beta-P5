@@ -19,7 +19,7 @@ function CommentCreateForm(props) {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
-      const { data } = await axiosRes.post("/comments", {
+      const { data } = await axiosRes.post("/comments/", {
         content,
         post,
       });
@@ -32,6 +32,7 @@ function CommentCreateForm(props) {
           {
             ...prevPost.results[0],
             comments_count: prevPost.results[0].comments_count + 1,
+            ...prevPost.results.slice(1),
           },
         ],
       }));
