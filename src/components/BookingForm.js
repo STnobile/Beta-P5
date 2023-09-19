@@ -42,7 +42,7 @@ function BookingForm() {
         e.preventDefault();
 
         try {
-            await axios.post('/api/visits', { date, time });
+            await axios.post('/visits/', { date, time });
             // Clear form fields and reload bookings
             setDate('');
             setTime('');
@@ -53,10 +53,11 @@ function BookingForm() {
     };
 
     return (
-        <Row className={styles.Container}>
+        <Row className={styles.Row}>
             <Col className="my-auto p-0 p-md-2" md={6}>
                 <Container className={`${appStyles.Content} p-4 `}>
                     <h1 className={styles.Header}>Book a Visit</h1>
+
                     <Form onSubmit={handleBookingSubmit}>
                         <Form.Group controlId="date">
                             <Form.Label>Date:</Form.Label>
@@ -67,7 +68,10 @@ function BookingForm() {
                                 onChange={(e) => setDate(e.target.value)}
                                 required
                             >
-                                <option value="">Select a Date:</option>
+                                <option
+                                    value="Select a Date:">
+                                    </option>
+
                                 {allowedDays.map((day) => (
                                     <option key={day} value={day}>
                                         {day}
@@ -84,7 +88,7 @@ function BookingForm() {
                                 onChange={(e) => setTime(e.target.value)}
                                 required
                             >
-                                <option value="">Select a Time Slot:</option>
+                                <option value="Select a Time Slot:"></option>
                                 {allowedTimeSlots.map((slot) => (
                                     <option key={slot} value={slot}>
                                         {slot}
