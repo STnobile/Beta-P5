@@ -16,6 +16,7 @@ import UserPasswordForm from "./page/profiles/UserPasswordForm";
 import ProfileEditForm from "./page/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import BookingForm from './components/BookingForm';
+import BookingUpdateForm from "./components/BookingUpdateForm";
 
 
 function App() {
@@ -59,13 +60,18 @@ function App() {
           <Route
             exact
             path="/visiting"
-            render={() => (
-              <BookingForm 
-                message="No results found. Adjust the search keyword or like a post."
-                filter={`likes__owner__profile=${profile_id}&ordering=-likes__created_at&`}
-              />
-            )}
+            render={() => 
+              <BookingForm/>
+            }
           />
+          <Route
+            exact
+            path="/visiting/:id/edit"
+            render={() => 
+              <BookingUpdateForm
+              />
+            }
+            />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />

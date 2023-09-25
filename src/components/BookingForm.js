@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
+import { useCurrentUser } from '../contexts/CurrentUserContext';
 import Form from 'react-bootstrap/Form';
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
-
 import styles from '../styles/BookingForm.module.css';
 import btnStyles from '../styles/Button.module.css';
 import appStyles from '../App.module.css';
 
-const getDatePlusDay = (days) => {
-    const today = new Date()
-    const date = new Date(today)
-    date.setDate(date.getDate() + days)
-    return date.toISOString().slice(0, 10)
-}
+const getDatePlusDay = days => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toISOString().slice(0, 10);
+};
 
 function BookingForm() {
     const [date, setDate] = useState('');
@@ -25,10 +23,10 @@ function BookingForm() {
     const [bookings, setBookings] = useState([]);
     const [error, setError] = useState('');
     const [chosenDateTime, setChosenDateTime] = useState(null);
-    const maxCapacity = 28; // Maximum capacity value
+    const maxCapacity = 28;
+    const currentUser = useCurrentUser();
 
     useEffect(() => {
-        // Load bookings when the component mounts
         loadBookings();
     }, []);
 
@@ -42,10 +40,7 @@ function BookingForm() {
         }
     };
 
-    const allowedDays = [...Array(7).keys()].map((day) => {
-        return getDatePlusDay(day)
-    });
-
+    const allowedDays = [...Array(7).keys()].map(getDatePlusDay);
     const allowedTimeSlots = [
         '10:00 am - 11:30 am',
         '12:00 pm - 1:30 pm',
@@ -53,41 +48,29 @@ function BookingForm() {
         '6:00 pm - 7:30 pm',
     ];
 
-    // Function to calculate the current capacity for each time slot and date
-    const calculateCurrentCapacity = (selectedDate, selectedTime) => {
-        return bookings.reduce((totalCapacity, booking) => {
-            if (booking.date === selectedDate && booking.time_slot === selectedTime) {
-                totalCapacity += booking.num_of_people;
-            }
-            return totalCapacity;
-        }, 0);
-    };
+    const calculateCurrentCapacity = (selectedDate, selectedTime) => bookings.reduce(
+        (totalCapacity, booking) => booking.date === selectedDate && booking.time_slot === selectedTime
+            ? totalCapacity + booking.num_of_people
+            : totalCapacity
+    , 0);
 
-    const handleBookingSubmit = async (e) => {
+    const handleBookingSubmit = async e => {
         e.preventDefault();
-
         try {
-            // Calculate the current capacity based on the selected date and time slot
             const currentCapacity = calculateCurrentCapacity(date, time);
-
-            // Ensure current_capacity doesn't exceed max_capacity
             if (currentCapacity + numOfPeople <= maxCapacity) {
-                // Simulate a successful booking submission (Replace this with your actual code)
                 const bookingData = {
                     date,
                     time_slot: time,
-                    max_capacity: maxCapacity,
                     num_of_people: numOfPeople,
-                    current_capacity: currentCapacity + numOfPeople,
+                    user_id: currentUser.id,
                 };
-
-                // Clear form fields and reload bookings
+                await axios.post('/visiting/', bookingData);
                 setDate('');
                 setTime('');
-                setNumOfPeople(1); // Reset num of people to 1
+                setNumOfPeople(1);
                 loadBookings();
                 setChosenDateTime(`${date} ${time}`);
-                console.log(bookingData); // This will log the booking data
             } else {
                 setError('The selected time slot is fully booked.');
             }
@@ -100,16 +83,13 @@ function BookingForm() {
     return (
         <Row className={styles.Row}>
             <Col className="my-auto p-0 p-md-2" md={6}>
-                <Container className={`${appStyles.Content} p-4 `}>
+                <Container className={`${appStyles.Content} p-4`}>
                     <h1 className={styles.Header}>Book a Visit</h1>
-
                     {error && <p className="text-danger">{error}</p>}
-
                     <Form onSubmit={handleBookingSubmit}>
                         <Form.Group controlId="date">
                             <Form.Label>Date:</Form.Label>
                             <Form.Control
-                                className={""}
                                 as="select"
                                 value={date}
                                 onChange={(e) => setDate(e.target.value)}
@@ -118,8 +98,7 @@ function BookingForm() {
                                 <option value="" disabled hidden>
                                     Select a Date:
                                 </option>
-
-                                {allowedDays.map((day) => (
+                                {allowedDays.map(day => (
                                     <option key={day} value={day}>
                                         {day}
                                     </option>
@@ -129,7 +108,6 @@ function BookingForm() {
                         <Form.Group controlId="time">
                             <Form.Label>Time:</Form.Label>
                             <Form.Control
-                                className={""}
                                 as="select"
                                 value={time}
                                 onChange={(e) => setTime(e.target.value)}
@@ -138,19 +116,16 @@ function BookingForm() {
                                 <option value="" disabled hidden>
                                     Select a Time Slot:
                                 </option>
-                                {allowedTimeSlots.map((slot) => (
+                                {allowedTimeSlots.map(slot => (
                                     <option key={slot} value={slot}>
                                         {slot}
                                     </option>
                                 ))}
                             </Form.Control>
                         </Form.Group>
-
-                        {/* Allow the user to select the number of people */}
                         <Form.Group controlId="num_of_people">
                             <Form.Label>Number of People:</Form.Label>
                             <Form.Control
-                                className={styles.Input}
                                 type="number"
                                 min={1}
                                 max={28}
@@ -159,18 +134,14 @@ function BookingForm() {
                                 required
                             />
                         </Form.Group>
-
-                        {/* Display max capacity */}
                         <Form.Group controlId="max_capacity">
                             <Form.Label>Max Capacity:</Form.Label>
                             <Form.Control
-                                className={styles.Input}
                                 type="text"
                                 value={maxCapacity}
                                 readOnly
                             />
                         </Form.Group>
-
                         <Button
                             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
@@ -179,16 +150,15 @@ function BookingForm() {
                         </Button>
                     </Form>
                     <ul>
-                        {bookings.map((booking) => (
-                            <li key={booking.id} className={styles.Header}>
-                                 {booking.date} {booking.time_slot}
+                        {bookings.map(booking => (
+                            <li key={booking.id}>
+                                {booking.date} {booking.time_slot}
                             </li>
                         ))}
                     </ul>
-
                     {chosenDateTime && (
                         <div className={styles.ChosenDateTime}>
-                            You have booking: {chosenDateTime}
+                            You have a booking on: {chosenDateTime}
                         </div>
                     )}
                 </Container>

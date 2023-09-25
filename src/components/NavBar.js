@@ -58,7 +58,7 @@ const NavBar = () => {
             <NavLink
                 className={styles.NavLink}
                 activeClassName={styles.Active}
-                to="/booking" >
+                to="/visiting" >
                 <i className="fa-solid fa-calendar-day"></i>Booking
             </NavLink>
             <NavLink
