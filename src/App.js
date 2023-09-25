@@ -58,7 +58,7 @@ function App() {
           />
           <Route
             exact
-            path="/booking"
+            path="/visiting"
             render={() => (
               <BookingForm 
                 message="No results found. Adjust the search keyword or like a post."
