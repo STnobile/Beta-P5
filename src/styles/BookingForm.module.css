@@ -2,7 +2,7 @@
     height: calc(100vh - 81px);
   }
   
-  .Input {
+.Input {
     background: #ffffff;
     border: 1px solid #f0f1f9;
     box-sizing: border-box;
@@ -10,18 +10,18 @@
     color: #7177a1;
     text-align: center;
     padding: 10px;
-  }
+}
   
-  .Header {
+.Header {
     font-style: normal;
-    font-weight: bold;
-    font-size: 16px;
-    line-height: 19px;
-    text-align: center;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    color: #e1d122fb;
-  }
+   font-weight: bold;
+   font-size: 16px;
+  line-height: 19px;
+  text-align: center;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+   color: #e1d122fb;
+}
   
   .Link {
     text-decoration: none;
@@ -45,3 +45,18 @@
   .SignUpCol {
     height: 375px;
   }
+
+
+.BookingTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.BookingTable th, .BookingTable td {
+  border: 1px solid #ddd;
+  padding: 8px;
+}
+
+.BookingTable th {
+  background-color: #f2f2f2;
+}

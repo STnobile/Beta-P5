@@ -57,21 +57,16 @@ function App() {
               />
             )}
           />
-          <Route
+             <Route
             exact
             path="/visiting"
-            render={() => 
-              <BookingForm/>
-            }
+            render={() => <BookingForm />}
           />
           <Route
             exact
-            path="/visiting/:id/edit"
-            render={() => 
-              <BookingUpdateForm
-              />
-            }
-            />
+            path="/visiting/edit"
+            render={() => <BookingUpdateForm />}
+          />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />
