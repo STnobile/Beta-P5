@@ -1,0 +1,39 @@
+.container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    padding-top: 81px;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+}
+
+.imageBox,
+.textBox {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 120px; /* Set minimum height to 120px as per .Asset styles */
+    width: 50%; /* Take up half the screen width */
+    padding: 15px; /* Space between content and border */
+    border: 5px solid #333; /* Border acting as frame */
+    margin: 20px; /* Space around the frame */
+    overflow: hidden;
+}
+
+.image {
+    display: block; /* Remove any default vertical space of the image */
+    max-width: 100%; /* Make image responsive to the width of .imageBox */
+    height: auto; /* Keep the aspect ratio of the image */
+  }
+  
+  .text {
+    font-size: 1rem;
+    text-align: center;
+}

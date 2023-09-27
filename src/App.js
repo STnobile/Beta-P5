@@ -16,6 +16,10 @@ import UserPasswordForm from "./page/profiles/UserPasswordForm";
 import ProfileEditForm from "./page/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import BookingForm from './components/BookingForm';
+import MuseoVini from './components/MuseoVini';
+import OurServices from "./components/OurService";
+
+
 
 
 function App() {
@@ -31,7 +35,10 @@ function App() {
             exact
             path="/"
             render={() => (
+              <>
+              <MuseoVini />
               <PostsPage message="No results found. Adjust the search keyword." />
+              </>
             )}
           />
 
@@ -56,7 +63,16 @@ function App() {
               />
             )}
           />
-          <Route exact path="/visiting" render={() => <BookingForm />} />
+          <Route 
+            exact 
+            path="/visiting" 
+            render={() => (
+              <>
+               <OurServices />
+               <BookingForm />
+              </>
+            )}
+            />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />
