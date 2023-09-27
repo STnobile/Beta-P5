@@ -16,7 +16,6 @@ import UserPasswordForm from "./page/profiles/UserPasswordForm";
 import ProfileEditForm from "./page/profiles/ProfileEditForm";
 import NotFound from "./components/NotFound";
 import BookingForm from './components/BookingForm';
-import BookingUpdateForm from "./components/BookingUpdateForm";
 
 
 function App() {
@@ -57,16 +56,7 @@ function App() {
               />
             )}
           />
-             <Route
-            exact
-            path="/visiting"
-            render={() => <BookingForm />}
-          />
-          <Route
-            exact
-            path="/visiting/edit"
-            render={() => <BookingUpdateForm />}
-          />
+          <Route exact path="/visiting" render={() => <BookingForm />} />
           <Route exact path="/signin" render={() => <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />

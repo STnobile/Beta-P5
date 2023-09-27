@@ -9,6 +9,7 @@ import Col from 'react-bootstrap/Col';
 import styles from '../styles/BookingForm.module.css';
 import btnStyles from '../styles/Button.module.css';
 import appStyles from '../App.module.css';
+import Image from "react-bootstrap/Image";
 
 const getDatePlusDay = days => {
     const date = new Date();
@@ -25,6 +26,11 @@ function BookingForm() {
     const [chosenDateTime, setChosenDateTime] = useState(null);
     const maxCapacity = 28;
     const currentUser = useCurrentUser();
+
+    const isOwnerOfBooking = booking => booking.owner_id === currentUser.id;
+
+    // Define userBookings here
+    const userBookings = bookings.filter(booking => isOwnerOfBooking(booking));
 
     const loadBookings = async () => {
         try {
@@ -66,18 +72,6 @@ function BookingForm() {
             : totalCapacity
         , 0);
 
-    const [editingBooking, setEditingBooking] = useState(null);
-
-    const handleEdit = (bookingId) => {
-        const bookingToEdit = bookings.find(booking => booking.id === bookingId);
-        if (bookingToEdit) {
-            setDate(bookingToEdit.date);
-            setTime(bookingToEdit.time_slot);
-            setNumOfPeople(bookingToEdit.num_of_people);
-            setEditingBooking(bookingToEdit);
-        }
-    };
-
     const handleBookingSubmit = async e => {
         e.preventDefault();
         try {
@@ -89,16 +83,10 @@ function BookingForm() {
                     num_of_people: numOfPeople,
                     user_id: currentUser.id,
                 };
-                
-                if (editingBooking) {
-                    // Update the existing booking
-                    await axios.put(`/visiting/${editingBooking.id}/`, bookingData);
-                    setEditingBooking(null);  // Reset the editing state
-                } else {
-                    // Create a new booking
-                    await axios.post('/visiting/', bookingData);
-                }
-                
+
+                // Create a new booking
+                await axios.post('/visiting/', bookingData);
+
                 setDate('');
                 setTime('');
                 setNumOfPeople(1);
@@ -115,6 +103,8 @@ function BookingForm() {
 
     const handleDelete = async (bookingId) => {
         try {
+            // Here, you can also use the isOwnerOfBooking function to check ownership 
+            // before deleting if required.
             await axios.delete(`/visiting/${bookingId}/`);
             loadBookings();
         } catch (err) {
@@ -122,7 +112,6 @@ function BookingForm() {
             setError('Error deleting booking. Please try again.');
         }
     };
-
 
     return (
         <Row className={styles.Row}>
@@ -189,39 +178,38 @@ function BookingForm() {
                                 value={maxCapacity}
                                 readOnly
                             />
-
                         </Form.Group>
 
                         <Button
-                            className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Dark}`}
+                             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
                         >
                             Submit Booking
                         </Button>
                     </Form>
+                    <hr />
+
                     <table className={styles.BookingTable}>
                         <thead>
                             <tr>
                                 <th>Date</th>
-                                <th>Time Slot</th>
-                                <th>Number of People</th>
+                                <th>Time</th>
+                                <th>N.P.</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {bookings
-                                .filter(booking => booking.user_id === currentUser.id)
-                                .map(booking => (
-                                    <tr key={booking.id}>
-                                        <td>{booking.date}</td>
-                                        <td>{booking.time_slot}</td>
-                                        <td>{booking.num_of_people}</td>
-                                        <td>
-                                            <button onClick={() => handleEdit(booking.id)}>Edit</button>
-                                            <button onClick={() => handleDelete(booking.id)}>Delete</button>
-                                        </td>
-                                    </tr>
-                                ))}
+                            {userBookings.map(booking => (
+                                <tr key={booking.id}>
+                                    <td>{booking.date}</td>
+                                    <td>{booking.time_slot}</td>
+                                    <td>{booking.num_of_people}</td>
+                                    <td>
+                                        <button
+                                         onClick={() => handleDelete(booking.id)}><i class="fa-solid fa-trash-can"></i></button>
+                                    </td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
 
@@ -231,6 +219,15 @@ function BookingForm() {
                         </div>
                     )}
                 </Container>
+            </Col>
+            <Col
+                md={6}
+                className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}
+            >
+                <Image
+                    className={`${appStyles.FillerImage}`}
+                    src={"https://res.cloudinary.com/dj3sy6ut7/image/upload/v1693921307/discovery.jpg"}
+                />
             </Col>
         </Row>
     );
