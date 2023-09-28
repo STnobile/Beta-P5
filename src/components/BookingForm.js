@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import { useCurrentUser } from '../contexts/CurrentUserContext';
 import Form from 'react-bootstrap/Form';
+
 import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import styles from '../styles/BookingForm.module.css';
-import btnStyles from '../styles/Button.module.css';
 import appStyles from '../App.module.css';
+import btnStyles from "../styles/Button.module.css";
 import Image from "react-bootstrap/Image";
+
+
 
 const getDatePlusDay = days => {
     const date = new Date();
@@ -46,18 +49,20 @@ function BookingForm() {
         loadBookings();
     }, []);
 
-    const allowedDays = [...Array(10).keys()]
-        .map(getDatePlusDay)
-        .filter(day => {
-            const dayOfWeek = new Date(day).getDay();
-            return dayOfWeek !== 0 && dayOfWeek !== 1;  // Exclude Sundays and Mondays
-        })
-        .filter(day => {
-            // Ensure the day is not in the past
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);  // Reset time to compare dates only
-            return new Date(day) >= today;
-        });
+    const allowedDays = useMemo(() => {
+        return [...Array(10).keys()]
+            .map(getDatePlusDay)
+            .filter(day => {
+                const dayOfWeek = new Date(day).getDay();
+                return dayOfWeek !== 0 && dayOfWeek !== 1;  // Exclude Sundays and Mondays
+            })
+            .filter(day => {
+                // Ensure the day is not in the past
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);  // Reset time to compare dates only
+                return new Date(day) >= today;
+            });
+    }, []);
 
     const allowedTimeSlots = [
         '10:00 am - 11:30 am',
@@ -117,7 +122,9 @@ function BookingForm() {
         <Row className={styles.Row}>
             <Col className="my-auto p-0 p-md-2" md={6}>
                 <Container className={`${appStyles.Content} p-4`}>
+                    <>
                     <h1 className={styles.Header}>Book a Visit</h1>
+                    </>
                     {error && <p className="text-danger">{error}</p>}
                     <Form onSubmit={handleBookingSubmit}>
                         <Form.Group controlId="date">
@@ -181,7 +188,7 @@ function BookingForm() {
                         </Form.Group>
 
                         <Button
-                             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
+                            className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
                         >
                             Submit Booking
@@ -205,8 +212,10 @@ function BookingForm() {
                                     <td>{booking.time_slot}</td>
                                     <td>{booking.num_of_people}</td>
                                     <td>
-                                        <button
-                                         onClick={() => handleDelete(booking.id)}><i class="fa-solid fa-trash-can"></i></button>
+                                        <Button 
+                                         className={`${btnStyles.Blue}`}
+                                         name='delete'
+                                         onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i></Button>
                                     </td>
                                 </tr>
                             ))}

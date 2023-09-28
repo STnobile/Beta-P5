@@ -1,102 +1,111 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Beta-P5
 
-Welcome,
+## Description.
+Beta-P5 is a social media platform dedicated to showcasing a unique private collection detailing wine making before the advent of electricity. The platform allows users to immerse themselves in the rich history, share their experiences in the form of images and stories, and interact with a community of like-minded enthusiasts. After a physical visit to the museum, users can share their stories and experiences with the community.
 
-This is the Code Institute student template for React apps on the Codeanywhere IDE. We have preinstalled all of the tools you need to get started. It's perfectly ok to use this template as the basis for your project submissions.  
-DO NOT use this template if you are using the Gitpod IDE. Use the following command instead:  
-`npx create-react-app . --template git+https://github.com/Code-Institute-Org/cra-template-moments.git --use-npm`
 
-You can safely delete this README.md file, or change it for your own project. Please do read it at least once, though! It contains some important information about Codeanywhere and the extensions we use. Some of this information has been updated since the video content was created. The last update to this file was: **31st August, 2023**
+## NavBar.js
+![Description](../Beta-P5/src/styles/media/navbar.png)
+* AS illustrated above you can clearly see displayed the logo on the left side and the icon to add a post.
+* From the middle of the screen movie to the right you can see all the set of icon
+    - Home
+       - In this section the user will find the story of the the Museo, below that it will star the list of post.
+    - Feed 
+    - Liked 
+      - Both {feed and liked} works very similar, they display the likes the user have put on the post and the feed are the post the user has posted.
+    - Booking
+    - Sign Out 
+    - Profile 
 
-## Codeanywhere Reminders
+  #  Profile 
+   - In here you can see the page dedicated to the user wit different 
+   section:
 
-In Codeanywhere you have superuser security privileges by default. Therefore you do not need to use the `sudo` (superuser do) command in the bash terminal in any of the lessons.
+     * Profile Name 
+     * Number of posts
+     * Number of Followers 
+     * Number of Following 
 
-To log into the Heroku toolbelt CLI:
+   - on the Top right section there is a "ThreeDot" icon once clicked
+    it will display some options :
+      
+      * Edit profile 
+       in here the user is allowed to change his Avatar and add a small Bio if he likes.
+      * Change username 
+      * Change password 
 
-1. Log in to your Heroku account and go to _Account Settings_ in the menu under your avatar.
-2. Scroll down to the _API Key_ and click _Reveal_
-3. Copy the key
-4. In Codeanywhere, from the terminal, run `heroku_config`
-5. Paste in your API key when asked
+      both have the only scope to do what it says.
 
-You can now use the `heroku` CLI program - try running `heroku apps` to confirm it works. This API key is unique and private to you so do not share it. If you accidentally make it public then you can create a new one with _Regenerate API Key_.
+![Description](../Beta-P5/src/styles/media/profile.png)
 
----
 
-Happy coding!
+# Getting Started
+To begin interacting with the platform, users need to sign up. Once registered, they can delve into the world of vintage wine making, book visits, post images with captions, and engage with other members through likes and comments.
+![Description](../Beta-P5/src/styles/media/home.png)
+![Description](../Beta-P5/src/styles/media/signin.png)
+![Description](../Beta-P5/src/styles/media/signuo.png)
+![Description](../Beta-P5/src/styles/media/homeaftersign.png)
+![Description](../Beta-P5/src/styles/media/createpost.png)
+![Description](../Beta-P5/src/styles/media/liked.page.png)
 
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+![Description](../Beta-P5/src/styles/media/home.png)
 
-## Available Scripts
+# Features
 
-In the project directory, you can run:
+- Popular Profiles: Showcase users with the highest followers and most 
+   likes.
 
-### `npm install`
+- Booking System: Allows users to book visits to the museum. Here's  
+   how it works:
+   - Log in to the system.
 
-Installs the required npm packages.
+  - Choose a date (Sundays and Mondays are unavailable).
+ -  Select a time slot:
+     *  10:00am - 11:30am
+     *  12:00pm - 1:30pm
+     *  4:00pm - 5:30pm
+     * 6:00pm - 7:30pm
 
-### `npm start`
+- Specify the number of attendees (between 1 and 28). The maximum capacity for each time slot is 28 visitors.
 
-Runs the app in the development mode.\
-Open port 3000 to view it in the browser.
+- Upon successful booking, users receive a confirmation message along  with a delete button, allowing them to cancel their reservation if necessary.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+![Description](../Beta-P5/src/styles/media/bookingform.png)
+![Description](../Beta-P5/src/styles/media/ourservice.png)
 
-### `npm test`
+# Validations
+  All of my validation are effected by the  lockdown error I will explain it later on my file.
+  ![Description](../Beta-P5/src/styles/media/lockdown.png)
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+  ![Description](../Beta-P5/src/styles/media/validationBooking.png)
+  ![Description](../Beta-P5/src/styles/media/validationhome.png)
+  ![Description](../Beta-P5/src/styles/media/validation.liked.png)
 
-### `npm run build`
+## Technology 
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ - HTML
+ - CSS 
+ - REACT.JS 
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ ### Acknowledgments
+The project was inspired by the walkthrough projects from the Code Institute. It has been adapted to cater to the needs of the family museum.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+# Errors
 
-### `npm run eject`
+all the website work fine.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+I would like to point that I am getting some warning on my console.
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+I had a session with the mentor the 27/09 and he suggested me to ask help to the tutor so i have done that too.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Once the tutor took a look he sent me some screenshot where it didn’t have the warning.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
-## Learn More
+![Description](../Beta-P5/src/styles/media/lockdownerror.png)
+ - In the screenshot above is the warning a get on my device.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
 
-To learn React, check out the [React documentation](https://reactjs.org/).
 
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Description](../Beta-P5/src/styles/media/lockweeor.png)
+ - In this one is the console of the tutor once after have created an account and try to post or booked a visit.
