@@ -20,7 +20,7 @@ const getDatePlusDay = days => {
 };
 
 function BookingForm() {
-    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(true);
     const [date, setDate] = useState(getDatePlusDay(0));
     const [time, setTime] = useState('');
     const [numOfPeople, setNumOfPeople] = useState(1);
@@ -29,6 +29,7 @@ function BookingForm() {
     const [chosenDateTime, setChosenDateTime] = useState(null);
     const maxCapacity = 28;
     const currentUser = useCurrentUser();
+    const [deleteSuccess, setDeleteSuccess] = useState('');
 
     const isOwnerOfBooking = booking => booking.owner_id === currentUser.id;
 
@@ -66,6 +67,7 @@ function BookingForm() {
             });
     }, []);
 
+
     const TOUR_SECTIONS = [
         ['Museum', 'Museum'],
         ['Photos Gallery', 'Photos Gallery'],
@@ -86,29 +88,29 @@ function BookingForm() {
             : totalCapacity
         , 0);
 
+
+
     const handleBookingSubmit = async e => {
         e.preventDefault();
+        // Reset form submitted state when starting a new submission
+        setFormSubmitted(false);
+        setError('');
         try {
             const currentCapacity = calculateCurrentCapacity(date, time);
             if (currentCapacity + numOfPeople <= maxCapacity) {
                 const bookingData = {
-                    date,
-                    time_slot: time,
-                    num_of_people: numOfPeople,
-                    user_id: currentUser.id,
-                    tour_section: tourSection,
                 };
-
                 // Create a new booking
                 await axios.post('/visiting/', bookingData);
 
-                setDate('');
+                // Reset fields and load bookings
+                setDate(getDatePlusDay(0));
                 setTime('');
                 setNumOfPeople(1);
                 setTourSection('');
                 loadBookings();
                 setChosenDateTime(`${date} ${time}`);
-                setFormSubmitted(true);
+                setFormSubmitted(false);
             } else {
                 setError('The selected time slot is fully booked.');
             }
@@ -119,14 +121,33 @@ function BookingForm() {
     };
 
     const handleDelete = async (bookingId) => {
-        try {
-            // Here, you can also use the isOwnerOfBooking function to check ownership 
-            // before deleting if required.
-            await axios.delete(`/visiting/${bookingId}/`);
-            loadBookings();
-        } catch (err) {
-            console.error('Error deleting booking:', err);
-            setError('Error deleting booking. Please try again.');
+        // Confirmation dialog
+        const isConfirmed = window.confirm('Are you sure you want to delete this booking?');
+
+        if (isConfirmed) {
+            try {
+                const bookingToDelete = bookings.find(booking => booking.id === bookingId);
+                if (!bookingToDelete) {
+                    setError('Booking not found.');
+                    return;
+                }
+                // Ensure the user is the owner of the booking if necessary before deletion
+                if (isOwnerOfBooking(bookingToDelete)) {
+                    await axios.delete(`/visiting/${bookingId}/`);
+                    setDeleteSuccess('Booking successfully deleted.');
+                    // Reset error in case there was one before
+                    setError('');
+                    loadBookings();
+                } else {
+                    setError('You are not authorized to delete this booking.');
+                }
+            } catch (err) {
+                console.error('Error deleting booking:', err);
+                setError('Error deleting booking. Please try again.');
+            }
+        } else {
+            // User clicked 'Cancel' in the confirmation dialog
+            console.log('Deletion cancelled by user.');
         }
     };
 
@@ -169,9 +190,9 @@ function BookingForm() {
                                 <option value="" disabled hidden>
                                     Select a Tour Section:
                                 </option>
-                                {TOUR_SECTIONS.map(section => (
-                                    <option key={section[0]} value={section[0]}>
-                                        {section[1]}
+                                {TOUR_SECTIONS.map(tourSection => (
+                                    <option key={tourSection[0]} value={tourSection[0]}>
+                                        {tourSection[1]}
                                     </option>
                                 ))}
                             </Form.Control>
@@ -240,26 +261,33 @@ function BookingForm() {
                             </thead>
                             <tbody>
                                 {userBookings.map(booking => (
-                                    <tr key={booking.id}>
-                                        <td>{booking.date}</td>
-                                        <td>{booking.time_slot}</td>
-                                        <td>{booking.tour_section}</td>
-                                        <td>{booking.num_of_people}</td>
-                                        <td>
-                                            <Button
-                                                className={`${btnStyles.Blue}`}
-                                                name='delete'
-                                                onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i></Button>
-                                        </td>
-                                    </tr>
+                                        <tr key={booking.id}>
+                                            <td>{booking.date}</td>
+                                            <td>{booking.time_slot}</td>
+                                            <td>{booking.tour_section}</td>
+                                            <td>{booking.num_of_people}</td>
+                                            <td>
+                                                <Button
+                                                    className={`${btnStyles.Blue}`}
+                                                    name='delete'
+                                                    onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i>
+                                                </Button>
+                                            </td>
+                                        </tr>
                                 ))}
-                            </tbody>
+                                    </tbody>
                         </table>
                     )}
 
                     {chosenDateTime && (
-                        <div className={styles.ChosenDateTime}>
-                            You have a booking on: {chosenDateTime}
+                        <div className="alert alert-success" role="alert">
+                            Your booking for {chosenDateTime} has been successfully submitted!
+                        </div>
+                    )}
+
+                    {deleteSuccess && (
+                        <div className="alert alert-success" role="alert">
+                            {deleteSuccess}
                         </div>
                     )}
                 </Container>

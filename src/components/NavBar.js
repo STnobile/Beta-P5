@@ -15,6 +15,7 @@ import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
 
+
 const NavBarIcon = ({ iconClass, label, link }) => (
     <NavLink
         className={styles.NavLink}
@@ -25,21 +26,27 @@ const NavBarIcon = ({ iconClass, label, link }) => (
     </NavLink>
 );
 
+
 const NavBar = () => {
     const currentUser = useCurrentUser();
     const setCurrentUser = useSetCurrentUser();
     const { expanded, setExpanded, ref } = useClickOutsideToggle();
-    const [dropdownOpen, setDropdownOpen] = React.useState(false);  // State for dropdown
+    const [dropdownOpen, setDropdownOpen] = React.useState(false);
 
     const handleSignOut = async () => {
         try {
             await axios.post("dj-rest-auth/logout/");
             setCurrentUser(null);
             removeTokenTimestamp();
+            // Clear token storage if tokens are stored in the browser
+            localStorage.removeItem('token'); // or sessionStorage.removeItem('token');
         } catch (err) {
             console.error("Error during sign out:", err);
+            // Implement a user-friendly error message here
+            alert('Failed to sign out. Please try again.');
         }
     };
+    
 
     return (
         <Navbar expanded={expanded}
@@ -62,8 +69,8 @@ const NavBar = () => {
                     />
                 </div>
                 <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav className="ml-auto text-right">
-                        <NavBarIcon iconClass="fa-solid fa-house-chimney" label="Home" link="/" exact />
+                    <Nav className="ml-auto" align="end">
+                        <NavBarIcon iconClass="fa-solid fa-house-chimney" label="Home" link="/" />
                         <NavBarIcon iconClass="fas fa-images" label="Gallery" link="/gallery" />
 
                         {currentUser ? (
@@ -75,14 +82,15 @@ const NavBar = () => {
                                     setDropdownOpen(isOpen);
                                     if(isOpen) setExpanded(true);
                                 }}
-                                alignRight  // This ensures the dropdown is right-aligned
+                                align="end" 
                             >
                                 <NavDropdown.Item as={NavLink} to={`/profiles/${currentUser?.profile_id}`}><i className="fas fa-user"></i>Profile</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/feed"><i className="fas fa-stream"></i>Feed</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/liked"><i className="fas fa-heart"></i>Liked</NavDropdown.Item>
                                 <NavDropdown.Item as={NavLink} to="/visiting"><i className="fa-solid fa-calendar-day"></i>Booking</NavDropdown.Item>
                                 <NavDropdown.Divider />
-                                <NavDropdown.Item as={NavLink} to="/" onClick={handleSignOut}><i className="fa-solid fa-door-closed"></i>Sign Out</NavDropdown.Item>
+                                <NavDropdown.Item align="end" as={NavLink} to="/" onClick={handleSignOut}><i className="fa-solid fa-door-closed"></i>Sign Out</NavDropdown.Item>
+                                
                             </NavDropdown>
                         ) : (
                             <>

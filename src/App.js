@@ -23,6 +23,8 @@ import Gallery from "./components/Gallery";
 
 
 
+
+
 function App() {
   const currentUser = useCurrentUser();
   const profile_id = currentUser?.profile_id || "";
