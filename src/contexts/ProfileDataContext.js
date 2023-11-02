@@ -11,7 +11,7 @@ export const useSetProfileData = () => useContext(SetProfileDataContext);
 
 export const ProfileDataProvider = ({ children }) => {
   const [profileData, setProfileData] = useState({
-    
+
     pageProfile: { results: [] },
     popularProfiles: { results: [] },
   });
@@ -62,7 +62,7 @@ export const ProfileDataProvider = ({ children }) => {
         },
       }));
     } catch (err) {
-      console.log(err);
+      console.log("Error during unfollow:", err.response ? err.response.data : err.message);
     }
   };
 

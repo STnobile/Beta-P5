@@ -17,7 +17,6 @@ import { axiosReq } from "../../api/axiosDefaults";
 
 function PostEditForm() {
   const [errors, setErrors] = useState({});
-
   const [postData, setPostData] = useState({
     title: "",
     content: "",
@@ -115,7 +114,11 @@ function PostEditForm() {
           {message}
         </Alert>
       ))}
+    </div>
+  );
 
+  const actionButtons = (
+    <div className="text-center mt-4">
       <Button
         className={`${btnStyles.Button} ${btnStyles.Blue}`}
         onClick={() => history.goBack()}
@@ -147,7 +150,6 @@ function PostEditForm() {
                   Change the image
                 </Form.Label>
               </div>
-
               <Form.File
                 id="image-upload"
                 accept="image/*"
@@ -155,19 +157,27 @@ function PostEditForm() {
                 ref={imageInput}
               />
             </Form.Group>
+            
             {errors?.image?.map((message, idx) => (
               <Alert variant="warning" key={idx}>
                 {message}
               </Alert>
             ))}
-
-            <div className="d-md-none">{textFields}</div>
+            
+            <div className="d-md-none">
+              {textFields}
+            </div>
           </Container>
         </Col>
+        
         <Col md={5} lg={4} className="d-none d-md-block p-0 p-md-2">
-          <Container className={appStyles.Content}>{textFields}</Container>
+          <Container className={appStyles.Content}>
+            {textFields}
+          </Container>
         </Col>
       </Row>
+      
+      {actionButtons}
     </Form>
   );
 }

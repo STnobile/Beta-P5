@@ -5,16 +5,16 @@ import Asset from "../../components/Asset";
 import { useProfileData } from "../../contexts/ProfileDataContext";
 import Profile from "./Profile";
 
-const PopularProfiles = ({ mobile }) => {
+const PopularProfiles = ({ mobile = false }) => {
   const { popularProfiles } = useProfileData();
 
   return (
     <Container
       className={`${appStyles.Content} ${
-        mobile && "d-lg-none text-center mb-3"
+        mobile ? "d-lg-none text-center mb-3" : ""
       }`}
     >
-      {popularProfiles.results.length ? (
+      {popularProfiles && popularProfiles.results && popularProfiles.results.length ? (
         <>
           <p>Most followed profiles.</p>
           {mobile ? (

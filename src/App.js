@@ -18,6 +18,7 @@ import NotFound from "./components/NotFound";
 import BookingForm from './components/BookingForm';
 import MuseoVini from './components/MuseoVini';
 import OurServices from "./components/OurService";
+import Gallery from "./components/Gallery";
 
 
 
@@ -94,6 +95,7 @@ function App() {
             path="/profiles/:id/edit"
             render={() => <ProfileEditForm />}
           />
+          <Route exact path="/gallery" render={() => <Gallery /> } />
           <Route render={() => <NotFound /> } />
         </Switch>
       </Container>

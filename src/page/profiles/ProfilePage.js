@@ -24,7 +24,18 @@ import Post from "../posts/Post";
 import { fetchMoreData } from "../../utils/utils";
 import NoResults from "../../assets/no-results.png";
 import { ProfileEditDropdown } from "../../components/MoreDropdown";
+import { NavLink } from "react-router-dom";
 
+
+const NavBarIcon = ({ iconClass, label, link }) => (
+  <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to={link}
+  >
+    <i className={iconClass}></i>{label}
+  </NavLink>
+);
 
 function ProfilePage() {
   const [hasLoaded, setHasLoaded] = useState(false);
@@ -33,7 +44,7 @@ function ProfilePage() {
   const currentUser = useCurrentUser();
   const { id } = useParams();
 
-  const {setProfileData, handleFollow, handleUnfollow} = useSetProfileData();
+  const { setProfileData, handleFollow, handleUnfollow } = useSetProfileData();
   const { pageProfile } = useProfileData();
 
   const [profile] = pageProfile.results;
@@ -54,7 +65,7 @@ function ProfilePage() {
         setProfilePosts(profilePosts);
         setHasLoaded(true);
       } catch (err) {
-       // console.log(err);
+        // console.log(err);
       }
     };
     fetchData();
@@ -62,7 +73,7 @@ function ProfilePage() {
 
   const mainProfile = (
     <>
-    {profile?.is_owner && <ProfileEditDropdown id={profile?.id} />}
+      {profile?.is_owner && <ProfileEditDropdown id={profile?.id} />}
       <Row noGutters className="px-3 text-center">
         <Col lg={3} className="text-lg-left">
           <Image
@@ -73,6 +84,7 @@ function ProfilePage() {
         </Col>
         <Col lg={6}>
           <h3 className="m-2">{profile?.owner}</h3>
+          <h4 className="m-2">{profile?.location}</h4>
           <Row className="justify-content-center no-gutters">
             <Col xs={3} className="my-2">
               <div>{profile?.posts_count}</div>
@@ -115,7 +127,10 @@ function ProfilePage() {
   const mainProfilePosts = (
     <>
       <hr />
-      <p className="text-center">{profile?.owner}'s posts</p>
+      <div className="text-center">
+        <p>{profile?.owner}'s posts</p>
+        {currentUser && <NavBarIcon iconClass="far fa-plus-square" label="Add post" link="/posts/create" />}
+      </div>
       <hr />
       {profilePosts.results.length ? (
         <InfiniteScroll

@@ -13,7 +13,6 @@ import btnStyles from "../styles/Button.module.css";
 import Image from "react-bootstrap/Image";
 
 
-
 const getDatePlusDay = days => {
     const date = new Date();
     date.setDate(date.getDate() + days);
@@ -21,6 +20,7 @@ const getDatePlusDay = days => {
 };
 
 function BookingForm() {
+    const [formSubmitted, setFormSubmitted] = useState(false);
     const [date, setDate] = useState(getDatePlusDay(0));
     const [time, setTime] = useState('');
     const [numOfPeople, setNumOfPeople] = useState(1);
@@ -34,6 +34,8 @@ function BookingForm() {
 
     // Define userBookings here
     const userBookings = bookings.filter(booking => isOwnerOfBooking(booking));
+
+    const [tourSection, setTourSection] = useState('');
 
     const loadBookings = async () => {
         try {
@@ -64,6 +66,13 @@ function BookingForm() {
             });
     }, []);
 
+    const TOUR_SECTIONS = [
+        ['Museum', 'Museum'],
+        ['Photos Gallery', 'Photos Gallery'],
+        ['Underground Wine tanks', 'Under Ground Wine tanks'],
+        ['Private Garden', 'Private Garden'],
+    ];
+
     const allowedTimeSlots = [
         '10:00 am - 11:30 am',
         '12:00 pm - 1:30 pm',
@@ -87,6 +96,7 @@ function BookingForm() {
                     time_slot: time,
                     num_of_people: numOfPeople,
                     user_id: currentUser.id,
+                    tour_section: tourSection,
                 };
 
                 // Create a new booking
@@ -95,8 +105,10 @@ function BookingForm() {
                 setDate('');
                 setTime('');
                 setNumOfPeople(1);
+                setTourSection('');
                 loadBookings();
                 setChosenDateTime(`${date} ${time}`);
+                setFormSubmitted(true);
             } else {
                 setError('The selected time slot is fully booked.');
             }
@@ -123,7 +135,7 @@ function BookingForm() {
             <Col className="my-auto p-0 p-md-2" md={6}>
                 <Container className={`${appStyles.Content} p-4`}>
                     <>
-                    <h1 className={styles.Header}>Book a Visit</h1>
+                        <h1 className={styles.Header}>Book a Visit</h1>
                     </>
                     {error && <p className="text-danger">{error}</p>}
                     <Form onSubmit={handleBookingSubmit}>
@@ -141,6 +153,25 @@ function BookingForm() {
                                 {allowedDays.map(day => (
                                     <option key={day} value={day}>
                                         {day}
+                                    </option>
+                                ))}
+                            </Form.Control>
+                        </Form.Group>
+
+                        <Form.Group controlId="tour_section">
+                            <Form.Label>Tour Section:</Form.Label>
+                            <Form.Control
+                                as="select"
+                                value={tourSection}
+                                onChange={(e) => setTourSection(e.target.value)}
+                                required
+                            >
+                                <option value="" disabled hidden>
+                                    Select a Tour Section:
+                                </option>
+                                {TOUR_SECTIONS.map(section => (
+                                    <option key={section[0]} value={section[0]}>
+                                        {section[1]}
                                     </option>
                                 ))}
                             </Form.Control>
@@ -196,31 +227,35 @@ function BookingForm() {
                     </Form>
                     <hr />
 
-                    <table className={styles.BookingTable}>
-                        <thead>
-                            <tr>
-                                <th>Date</th>
-                                <th>Time</th>
-                                <th>N.P.</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {userBookings.map(booking => (
-                                <tr key={booking.id}>
-                                    <td>{booking.date}</td>
-                                    <td>{booking.time_slot}</td>
-                                    <td>{booking.num_of_people}</td>
-                                    <td>
-                                        <Button 
-                                         className={`${btnStyles.Blue}`}
-                                         name='delete'
-                                         onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i></Button>
-                                    </td>
+                    {formSubmitted && (
+                        <table className={styles.BookingTable}>
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Section</th>
+                                    <th>N.P.</th>
+                                    <th>Actions</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {userBookings.map(booking => (
+                                    <tr key={booking.id}>
+                                        <td>{booking.date}</td>
+                                        <td>{booking.time_slot}</td>
+                                        <td>{booking.tour_section}</td>
+                                        <td>{booking.num_of_people}</td>
+                                        <td>
+                                            <Button
+                                                className={`${btnStyles.Blue}`}
+                                                name='delete'
+                                                onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i></Button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    )}
 
                     {chosenDateTime && (
                         <div className={styles.ChosenDateTime}>
@@ -229,6 +264,7 @@ function BookingForm() {
                     )}
                 </Container>
             </Col>
+
             <Col
                 md={6}
                 className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}

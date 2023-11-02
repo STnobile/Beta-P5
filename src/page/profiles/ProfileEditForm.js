@@ -92,7 +92,7 @@ const ProfileEditForm = () => {
           value={content}
           onChange={handleChange}
           name="content"
-          rows={7}
+          rows={3}
         />
       </Form.Group>
 
@@ -101,15 +101,6 @@ const ProfileEditForm = () => {
           {message}
         </Alert>
       ))}
-      <Button
-        className={`${btnStyles.Button} ${btnStyles.Blue}`}
-        onClick={() => history.goBack()}
-      >
-        cancel
-      </Button>
-      <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
-        save
-      </Button>
     </>
   );
 
@@ -158,6 +149,17 @@ const ProfileEditForm = () => {
           <Container className={appStyles.Content}>{textFields}</Container>
         </Col>
       </Row>
+      <div className="text-center mt-4">
+      <Button
+        className={`${btnStyles.Button} ${btnStyles.Blue}`}
+        onClick={() => history.goBack()}
+      >
+        cancel
+      </Button>
+      <Button className={`${btnStyles.Button} ${btnStyles.Blue}`} type="submit">
+        save
+      </Button>
+      </div>
     </Form>
   );
 };
