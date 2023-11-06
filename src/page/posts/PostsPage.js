@@ -26,23 +26,31 @@ function PostsPage({ message, filter = "" }) {
   const [query, setQuery] = useState("");
 
   useEffect(() => {
+    let isMounted = true; // This will keep track of whether the component is still mounted
+  
     const fetchPosts = async () => {
       try {
         const { data } = await axiosReq.get(`/posts/?${filter}search=${query}`);
-        setPosts(data);
-        setHasLoaded(true);
+        if (isMounted) { // Only update the state if the component is still mounted
+          setPosts(data);
+          setHasLoaded(true);
+        }
       } catch (err) {
-       // console.log(err);
+        if (isMounted) {
+          
+        }
+        console.log(err);
       }
     };
-
+  
     setHasLoaded(false);
     const timer = setTimeout(() => {
       fetchPosts();
     }, 1000);
-
+  
     return () => {
       clearTimeout(timer);
+      isMounted = false; 
     };
   }, [filter, query, pathname]);
 

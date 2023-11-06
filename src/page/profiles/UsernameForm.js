@@ -19,6 +19,9 @@ import appStyles from "../../App.module.css";
 
 const UsernameForm = () => {
   const [username, setUsername] = useState("");
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [location, setLocation] = useState('');
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
@@ -37,17 +40,26 @@ const UsernameForm = () => {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
+    console.log('username',username)
+    console.log('first_name',firstName)
+    console.log('last_name',lastName)
     try {
       await axiosRes.put("/dj-rest-auth/user/", {
-        username,
+        username,  
+        first_name: firstName, 
+        last_name: lastName,   
+        location               
       });
       setCurrentUser((prevUser) => ({
         ...prevUser,
         username,
+        first_name: firstName,
+        last_name: lastName,
+        location
       }));
       history.goBack();
     } catch (err) {
-     // console.log(err);
+      // console.log(err);
       setErrors(err.response?.data);
     }
   };
@@ -58,9 +70,51 @@ const UsernameForm = () => {
         <Container className={appStyles.Content}>
           <Form onSubmit={handleSubmit} className="my-2">
             <Form.Group>
-              <Form.Label>Change username</Form.Label>
+              <Form.Label>First Name</Form.Label>
               <Form.Control
-                placeholder="username"
+                placeholder="First name"
+                type="text"
+                value={firstName}
+                onChange={(event) => setFirstName(event.target.value)}
+              />
+            </Form.Group>
+            {errors?.firstName?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+            <Form.Group>
+              <Form.Label>Last Name</Form.Label>
+              <Form.Control
+                placeholder="Last name"
+                type="text"
+                value={lastName}
+                onChange={(event) => setLastName(event.target.value)}
+              />
+            </Form.Group>
+            {errors?.lastName?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+            <Form.Group>
+              <Form.Label>Location</Form.Label>
+              <Form.Control
+                placeholder="Location"
+                type="text"
+                value={location}
+                onChange={(event) => setLocation(event.target.value)}
+              />
+            </Form.Group>
+            {errors?.location?.map((message, idx) => (
+              <Alert key={idx} variant="warning">
+                {message}
+              </Alert>
+            ))}
+            <Form.Group>
+              <Form.Label>Change Username</Form.Label>
+              <Form.Control
+                placeholder="Username"
                 type="text"
                 value={username}
                 onChange={(event) => setUsername(event.target.value)}
@@ -71,18 +125,20 @@ const UsernameForm = () => {
                 {message}
               </Alert>
             ))}
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-              onClick={() => history.goBack()}
-            >
-              cancel
-            </Button>
-            <Button
-              className={`${btnStyles.Button} ${btnStyles.Blue}`}
-              type="submit"
-            >
-              save
-            </Button>
+            <div className="d-flex justify-content-between">
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                onClick={() => history.goBack()}
+              >
+                Cancel
+              </Button>
+              <Button
+                className={`${btnStyles.Button} ${btnStyles.Blue}`}
+                type="submit"
+              >
+                Save
+              </Button>
+            </div>
           </Form>
         </Container>
       </Col>

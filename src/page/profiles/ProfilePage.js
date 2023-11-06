@@ -129,7 +129,9 @@ function ProfilePage() {
       <hr />
       <div className="text-center">
         <p>{profile?.owner}'s posts</p>
-        {currentUser && <NavBarIcon iconClass="far fa-plus-square" label="Add post" link="/posts/create" />}
+        {is_owner && (
+          <NavBarIcon iconClass="far fa-plus-square" label="Add post" link="/posts/create" />
+        )}
       </div>
       <hr />
       {profilePosts.results.length ? (

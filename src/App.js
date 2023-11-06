@@ -21,10 +21,6 @@ import OurServices from "./components/OurService";
 import Gallery from "./components/Gallery";
 
 
-
-
-
-
 function App() {
   const currentUser = useCurrentUser();
   const profile_id = currentUser?.profile_id || "";
@@ -76,7 +72,7 @@ function App() {
               </>
             )}
             />
-          <Route exact path="/signin" render={() => <SignInForm />} />
+          <Route exact path="/signin" render={() =>  <SignInForm />} />
           <Route exact path="/signup" render={() => <SignUpForm />} />
           <Route exact path="/posts/create" render={() => <PostCreateForm />} />
           <Route exact path="/posts/:id" render={() => <PostPage />} />

@@ -41,29 +41,58 @@
   
   .BlueOutline,
   .Blue:hover {
-    /* border: 1px solid #2142b2; */
     background-color: #ffffff;
     color: #650b79;
   }
   
   .Black,
   .BlackOutline:hover {
-    /* background-color: #242a3d;
-    color: white; */
     background-color: #3b4462;
     color: aliceblue;
   }
   
   .Black:hover,
   .BlackOutline {
-    /* background-color: #dadadf;
+    background-color: #dadadf;
     color: #242a3d;
-    border-color: #242a3d; */
-    background-color: aliceblue;
-    color: #242a3d;
+    border-color: #242a3d;
+    /* background-color: rgb(255, 255, 255);
+    color: #ffffff; */
   }
   
   .Bright {
     background-color: #ff86ff;
     color: #ffffff;
   }
+
+
+/*-------------------------------- BTN BOOKING*/
+.vstnBtn {
+  background-color: #fefefe; /* Purple background */
+  border: 1px solid #610775; /* Purple border */
+  padding: 0.375rem 0.75rem; /* Padding */
+  border-radius: 0.25rem; /* Rounded corners */
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out; /* Smooth transition for hover effect */
+  cursor: pointer; /* Change cursor to pointer */
+}
+
+/* Button style on hover */
+.vstnBtn:hover,
+.vstnBtnOutline:hover {
+  background-color: #ffffff; /* White background */
+  color: #650b79; /* Purple text */
+  border-color: #650b79; /* Purple border */
+}
+
+/* Outline button style */
+.vstnBtnOutline {
+  background-color: #ffffff; /* White background */
+  color: #650b79; /* Purple text */
+  border: 1px solid #650b79; /* Purple border */
+  transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out; 
+}
+
+/* Outline button style on hover */
+.vstnBtnOutline:hover {
+  background-color: #ffffff; /* Purple background */
+}

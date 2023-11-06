@@ -1,28 +1,14 @@
 .Row {
-    height: calc(100vh - 81px);
-  }
-  
-.Input {
-    background: #ffffff;
-    border: 1px solid #f0f1f9;
-    box-sizing: border-box;
-    border-radius: 2px;
-    color: #7177a1;
-    text-align: center;
-    padding: 10px;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  min-height: 100vh; 
+  margin: 0; 
 }
-  
+
 .Header {
-    font-style: normal;
-   font-weight: bold;
-   font-size: 16px;
-  line-height: 19px;
-  text-align: center;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-   color: #e1d122fb;
+  text-align: center; /* Center the header text */
 }
-  
   .Link {
     text-decoration: none;
     text-align: center;
@@ -59,4 +45,23 @@
 
 .BookingTable th {
   background-color: #f2f2f2;
+}
+
+.Button {
+  display: block; /* Make the button a block element */
+  width: 100%; /* Make the button expand full width of the container */
+  margin-top: 20px; /* Add some space on the top of the button */
+}
+
+/* Info text style */
+.InfoText {
+  font-size: 0.9em; /* Smaller font size for info text */
+  margin-top: 5px; /* Space after the input */
+}
+
+@media (max-width: 768px) {
+  /* Adjustments for smaller screens */
+  .Content {
+    padding: 2rem; /* Smaller padding on small screens */
+  }
 }

@@ -10,7 +10,6 @@ import Col from 'react-bootstrap/Col';
 import styles from '../styles/BookingForm.module.css';
 import appStyles from '../App.module.css';
 import btnStyles from "../styles/Button.module.css";
-import Image from "react-bootstrap/Image";
 
 
 const getDatePlusDay = days => {
@@ -20,7 +19,7 @@ const getDatePlusDay = days => {
 };
 
 function BookingForm() {
-    const [formSubmitted, setFormSubmitted] = useState(true);
+    const [formSubmitted, setFormSubmitted] = useState(false);
     const [date, setDate] = useState(getDatePlusDay(0));
     const [time, setTime] = useState('');
     const [numOfPeople, setNumOfPeople] = useState(1);
@@ -29,7 +28,6 @@ function BookingForm() {
     const [chosenDateTime, setChosenDateTime] = useState(null);
     const maxCapacity = 28;
     const currentUser = useCurrentUser();
-    const [deleteSuccess, setDeleteSuccess] = useState('');
 
     const isOwnerOfBooking = booking => booking.owner_id === currentUser.id;
 
@@ -46,6 +44,7 @@ function BookingForm() {
             console.error('Error loading bookings:', err);
             setError('Error loading bookings. Please try again later.');
         }
+        // console.log('Bookings loaded:', response.data.results);
     };
 
     useEffect(() => {
@@ -57,12 +56,12 @@ function BookingForm() {
             .map(getDatePlusDay)
             .filter(day => {
                 const dayOfWeek = new Date(day).getDay();
-                return dayOfWeek !== 0 && dayOfWeek !== 1;  // Exclude Sundays and Mondays
+                return dayOfWeek !== 0 && dayOfWeek !== 1;
             })
             .filter(day => {
                 // Ensure the day is not in the past
                 const today = new Date();
-                today.setHours(0, 0, 0, 0);  // Reset time to compare dates only
+                today.setHours(0, 0, 0, 0);
                 return new Date(day) >= today;
             });
     }, []);
@@ -87,38 +86,45 @@ function BookingForm() {
             ? totalCapacity + booking.num_of_people
             : totalCapacity
         , 0);
-
-
+    
 
     const handleBookingSubmit = async e => {
-        e.preventDefault();
-        // Reset form submitted state when starting a new submission
-        setFormSubmitted(false);
-        setError('');
-        try {
-            const currentCapacity = calculateCurrentCapacity(date, time);
-            if (currentCapacity + numOfPeople <= maxCapacity) {
-                const bookingData = {
-                };
-                // Create a new booking
-                await axios.post('/visiting/', bookingData);
-
-                // Reset fields and load bookings
-                setDate(getDatePlusDay(0));
-                setTime('');
-                setNumOfPeople(1);
-                setTourSection('');
-                loadBookings();
-                setChosenDateTime(`${date} ${time}`);
-                setFormSubmitted(false);
-            } else {
-                setError('The selected time slot is fully booked.');
+            e.preventDefault(); // Correct usage to prevent form default submission.
+        
+            // Reset form submitted state when starting a new submission
+            setError('');
+            try {
+                const currentCapacity = calculateCurrentCapacity(date, time);
+                if (currentCapacity + numOfPeople <= maxCapacity) {
+                    const bookingData = {
+                        // Assuming you populate this object with the necessary booking information.
+                    };
+                    // Create a new booking
+                    const response = await axios.post('/visiting/', bookingData);
+                    if (response.status === 201) { // Check if the booking was created successfully (201 Created)
+                        // Reset fields and load bookings
+                        setDate(getDatePlusDay(0));
+                        setTime('');
+                        setNumOfPeople(1);
+                        setTourSection('');
+                        await loadBookings(); // Make sure to await the loading of bookings.
+                        setChosenDateTime(`${date} ${time}`); // You might want to update this before resetting date and time.
+                        setFormSubmitted(true);
+                    } else {
+                        setError('Failed to create the booking.');
+                    }
+                } else {
+                    setError('The selected time slot is fully booked.');
+                }
+            } catch (err) {
+                console.error('Error processing booking:', err);
+                setError('Error processing booking. Please try again.');
+            } finally {
+                // Optionally, you might want to reset the formSubmitted state after some time or after user acknowledges the submission
+                // For immediate reset, you can do it here
+                setFormSubmitted(false); // Consider if you want to set this to false immediately.
             }
-        } catch (err) {
-            console.error('Error processing booking:', err);
-            setError('Error processing booking. Please try again.');
-        }
-    };
+        };
 
     const handleDelete = async (bookingId) => {
         // Confirmation dialog
@@ -126,30 +132,37 @@ function BookingForm() {
 
         if (isConfirmed) {
             try {
+                // Find the booking object with the matching ID
                 const bookingToDelete = bookings.find(booking => booking.id === bookingId);
                 if (!bookingToDelete) {
                     setError('Booking not found.');
                     return;
                 }
-                // Ensure the user is the owner of the booking if necessary before deletion
+
+                // Check if the user is the owner of the booking
                 if (isOwnerOfBooking(bookingToDelete)) {
+                    // If the user is the owner, send the delete request
                     await axios.delete(`/visiting/${bookingId}/`);
-                    setDeleteSuccess('Booking successfully deleted.');
                     // Reset error in case there was one before
                     setError('');
+                    // Reload the bookings
                     loadBookings();
+                    setFormSubmitted(false);
                 } else {
+                    // If the user is not the owner, set an error
                     setError('You are not authorized to delete this booking.');
                 }
             } catch (err) {
+                // If an error occurs, log it and set an error message
                 console.error('Error deleting booking:', err);
                 setError('Error deleting booking. Please try again.');
             }
         } else {
-            // User clicked 'Cancel' in the confirmation dialog
+            // If the user cancels the confirmation, log the cancellation
             console.log('Deletion cancelled by user.');
         }
     };
+
 
     return (
         <Row className={styles.Row}>
@@ -248,19 +261,20 @@ function BookingForm() {
                     </Form>
                     <hr />
 
-                    {formSubmitted && (
-                        <table className={styles.BookingTable}>
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Time</th>
-                                    <th>Section</th>
-                                    <th>N.P.</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {userBookings.map(booking => (
+                    {formSubmitted ? (
+                        <div className="table-responsive">
+                            <table className={styles.BookingTable}>
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Time</th>
+                                        <th>Section</th>
+                                        <th>N.P.</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {userBookings.map(booking => (
                                         <tr key={booking.id}>
                                             <td>{booking.date}</td>
                                             <td>{booking.time_slot}</td>
@@ -268,15 +282,22 @@ function BookingForm() {
                                             <td>{booking.num_of_people}</td>
                                             <td>
                                                 <Button
-                                                    className={`${btnStyles.Blue}`}
+                                                    className={`${btnStyles.vstnBtn} ${btnStyles.vstnBtnOutline}`}
                                                     name='delete'
-                                                    onClick={() => handleDelete(booking.id)}><i className="fa-solid fa-trash-can"></i>
+                                                    onClick={() => handleDelete(booking.id)}
+                                                    aria-label="Delete booking"
+                                                >
+                                                    <i className="fa-solid fa-trash-can"></i>
                                                 </Button>
                                             </td>
                                         </tr>
-                                ))}
-                                    </tbody>
-                        </table>
+                                    ))}
+                                </tbody>
+                            </table>
+                        </div>
+                    ) : (
+                        // This will be rendered if formSubmitted is false
+                        <div>No bookings have been submitted.</div>
                     )}
 
                     {chosenDateTime && (
@@ -284,23 +305,7 @@ function BookingForm() {
                             Your booking for {chosenDateTime} has been successfully submitted!
                         </div>
                     )}
-
-                    {deleteSuccess && (
-                        <div className="alert alert-success" role="alert">
-                            {deleteSuccess}
-                        </div>
-                    )}
                 </Container>
-            </Col>
-
-            <Col
-                md={6}
-                className={`my-auto d-none d-md-block p-2 ${styles.SignInCol}`}
-            >
-                <Image
-                    className={`${appStyles.FillerImage}`}
-                    src={"https://res.cloudinary.com/dj3sy6ut7/image/upload/v1693921307/discovery.jpg"}
-                />
             </Col>
         </Row>
     );
