@@ -29,8 +29,11 @@ const ProfileEditForm = () => {
     name: "",
     content: "",
     image: "",
+    first_name: "",
+    last_name: "",
+    email: "",
   });
-  const { name, content, image } = profileData;
+  const { name, content, image, firstName, lastName, email } = profileData;
 
   const [errors, setErrors] = useState({});
 
@@ -39,8 +42,8 @@ const ProfileEditForm = () => {
       if (currentUser?.profile_id?.toString() === id) {
         try {
           const { data } = await axiosReq.get(`/profiles/${id}/`);
-          const { name, content, image } = data;
-          setProfileData({ name, content, image });
+          const { name, content, image, firstName } = data;
+          setProfileData({ name, content, image, firstName, lastName, email, });
         } catch (err) {
          // console.log(err);
           history.push("/");
@@ -51,7 +54,7 @@ const ProfileEditForm = () => {
     };
 
     handleMount();
-  }, [currentUser, history, id]);
+  }, [currentUser, history, id, lastName, email]);
 
   const handleChange = (event) => {
     setProfileData({
@@ -65,6 +68,9 @@ const ProfileEditForm = () => {
     const formData = new FormData();
     formData.append("name", name);
     formData.append("content", content);
+    formData.append("first_name", firstName);
+    formData.append("last_name", lastName);
+    formData.append("email", email);
 
     if (imageFile?.current?.files[0]) {
       formData.append("image", imageFile?.current?.files[0]);
@@ -95,6 +101,32 @@ const ProfileEditForm = () => {
           rows={3}
         />
       </Form.Group>
+      <Form.Group className="d-none">
+        <Form.Label>firstName</Form.Label>
+        <Form.Control
+          placeholder="First name"
+          type="text"
+          value={firstName}
+        />
+      </Form.Group>
+      <Form.Group className="d-none">
+        <Form.Label>lastName</Form.Label>
+        <Form.Control
+          placeholder="Last name"
+          type="text"
+          value={lastName}
+        />
+      </Form.Group>
+      <Form.Group className="d-none">
+        <Form.Label>Email
+        </Form.Label>
+        <Form.Control
+          placeholder="Email"
+          type="email" 
+          value={email}
+        />
+      </Form.Group>
+      
 
       {errors?.content?.map((message, idx) => (
         <Alert variant="warning" key={idx}>

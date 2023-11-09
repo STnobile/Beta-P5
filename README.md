@@ -5,7 +5,7 @@ Beta-P5 is a social media platform dedicated to showcasing a unique private coll
 
 
 ## NavBar.js
-![Description](../Beta-P5/src/styles/media/navbar.png)
+![Description](../Beta-P5/src/media/navbar.png)
 * AS illustrated above you can clearly see displayed the logo on the left side and the icon to add a post.
 * From the middle of the screen movie to the right you can see all the set of icon
     - Home
@@ -36,20 +36,21 @@ Beta-P5 is a social media platform dedicated to showcasing a unique private coll
 
       both have the only scope to do what it says.
 
-![Description](../Beta-P5/src/styles/media/profile.png)
+![devises reponsive](../Beta-P5/src/media/profile.png)
+![Description](../Beta-P5/src/media/profile.png)
 
 
 # Getting Started
 To begin interacting with the platform, users need to sign up. Once registered, they can delve into the world of vintage wine making, book visits, post images with captions, and engage with other members through likes and comments.
-![Description](../Beta-P5/src/styles/media/home.png)
-![Description](../Beta-P5/src/styles/media/signin.png)
-![Description](../Beta-P5/src/styles/media/signuo.png)
-![Description](../Beta-P5/src/styles/media/homeaftersign.png)
-![Description](../Beta-P5/src/styles/media/createpost.png)
-![Description](../Beta-P5/src/styles/media/liked.page.png)
+![Description](../Beta-P5/src/media/home.png)
+![Description](../Beta-P5/src/media/signin.png)
+![Description](../Beta-P5/src/media/signuo.png)
+![Description](../Beta-P5/src/media/homeaftersign.png)
+![Description](../Beta-P5/src/media/createpost.png)
+![Description](../Beta-P5/src/media/liked.page.png)
 
 
-![Description](../Beta-P5/src/styles/media/home.png)
+![Description](../Beta-P5/src/media/home.png)
 
 # Features
 

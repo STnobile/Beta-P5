@@ -33,39 +33,29 @@ const UsernameForm = () => {
   const currentUser = useCurrentUser();
   // console.log(useCurrentUser);
   const setCurrentUser = useSetCurrentUser();
-  // console.log(setCurrentUser)
-
+  // console.log(setCurrentUser);
 
   useEffect(() => {
-    // Define `fetchData` inside `useEffect` to capture the current `id`
-    const fetchData = async () => {
-      try {
-        const response = await axiosRes.get(`/dj-rest-auth/user/${id}`);
-        const userData = response.data;
-
-        setUsername(userData.username);
-        setFirstName(userData.first_name); 
-        setLastName(userData.last_name);
-        setEmail(userData.email);
-      } catch (error) {
-        // Error handling here
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
+    let index = 0
     if (currentUser?.profile_id?.toString() === id) {
+      console.log("Index: ", index)
+      console.log("currentUser from useEffect:", currentUser);
       setUsername(currentUser.username);
-      setFirstName(currentUser.first_name); 
-      setLastName(currentUser.last_name);
-      setEmail(currentUser.profile_id?.email);
-    } else if (currentUser) {
-      // Call `fetchData` if there is an `id` present and it's not the current user's profile
-      fetchData();
+      console.log("username from useEffect:", username);
+      console.log("profile from useEffect:", currentUser.profile);
+
+      setFirstName(currentUser.profile_firstName);
+      setLastName(currentUser.lastName );
+      setEmail(currentUser.email);
+      console.log("First Name from useEffect:", firstName);
+      console.log("Last Name from useEffect:", lastName);
+      console.log("Email from useEffect:", email);
+      console.log("Username from useEffect:", username);
+      index += 1
     } else {
-      // Redirect to the homepage if there is no `id`
       history.push("/");
     }
-  }, [currentUser, id, history]); 
+  }, [currentUser, history, id, email, username, firstName, lastName]);
 
   
 
@@ -108,7 +98,7 @@ const UsernameForm = () => {
         <Container className={appStyles.Content}>
           <Form onSubmit={handleSubmit} className="my-2">
             <Form.Group>
-              <Form.Label>First Name:</Form.Label>
+              <Form.Label>First Name: {firstName}</Form.Label>
               <Form.Control
                 placeholder="First name"
                 type="text"
@@ -140,12 +130,12 @@ const UsernameForm = () => {
               <Form.Label>Email</Form.Label>
               <Form.Control
                 placeholder="Email"
-                type="email" 
+                type="email" // Set type to email for proper validation
                 value={email}
                 onChange={(event) => setEmail(event.target.value)}
               />
             </Form.Group>
-            {errors?.email?.map((message, idx) => (
+            {errors?.email?.map((message, idx) => ( // Updated from location to email
               <Alert key={idx} variant="warning">
                 {message}
               </Alert>

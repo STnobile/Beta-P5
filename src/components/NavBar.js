@@ -76,7 +76,6 @@ const NavBar = () => {
         <NavDropdown.Item as={NavLink} to="/feed"><i className="fas fa-stream"></i>Feed</NavDropdown.Item>
         <NavDropdown.Item as={NavLink} to="/liked"><i className="fas fa-heart"></i>Liked</NavDropdown.Item>
         <NavDropdown.Item as={NavLink} to="/visiting"><i className="fa-solid fa-calendar-day"></i>Booking</NavDropdown.Item>
-        <NavDropdown.Item as={NavLink} to="/my-booking"><i className="fa-solid fa-calendar-day"></i>MyBooking</NavDropdown.Item>
         <NavDropdown.Divider />
         <NavDropdown.Item as={NavLink} to="/" onClick={handleSignOut}><i className="fa-solid fa-door-closed"></i>Sign Out</NavDropdown.Item>
       </NavDropdown>
@@ -102,8 +101,7 @@ const NavBar = () => {
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ml-auto" align="end">
             <NavBarIcon key="home" iconClass="fa-solid fa-house-chimney" label="Home" link="/" />
-            <NavBarIcon key="gallery"  iconClass="fas fa-images" label="Gallery" link="/gallery" />
-
+        
             {currentUser ? loggedInIcons : loggedOutIcons}
           </Nav>
         </Navbar.Collapse>
