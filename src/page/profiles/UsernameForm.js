@@ -27,26 +27,34 @@ const UsernameForm = () => {
   const history = useHistory();
   // console.log(history);
   const { id } = useParams();
-  // console.log("IDDDDDDDDDDDDDDD: ", id)
+   console.log("IDDDDDDDDDDDDDDD: ", id)
   // console.log({ id });
 
   const currentUser = useCurrentUser();
   // console.log(useCurrentUser);
   const setCurrentUser = useSetCurrentUser();
-  // console.log(setCurrentUser)
+  //  console.log(setCurrentUser)
 
 
   useEffect(() => {
     // Define `fetchData` inside `useEffect` to capture the current `id`
     const fetchData = async () => {
       try {
-        const response = await axiosRes.get(`/dj-rest-auth/user/${id}`);
+        const response = await axiosRes.get(`/dj-rest-auth/user/`);
         const userData = response.data;
+        console.log(userData)
 
         setUsername(userData.username);
+        console.log(userData.username)
         setFirstName(userData.first_name); 
+        console.log(userData.first_name)
         setLastName(userData.last_name);
+        
         setEmail(userData.email);
+        if (!currentUser.email) {
+          console.log("NO EMAIL")
+        }
+        console.log("email",userData.email)
       } catch (error) {
         // Error handling here
         console.error("Failed to fetch user data:", error);
@@ -54,11 +62,18 @@ const UsernameForm = () => {
     };
 
     if (currentUser?.profile_id?.toString() === id) {
-      setUsername(currentUser.username);
-      setFirstName(currentUser.first_name); 
-      setLastName(currentUser.last_name);
-      setEmail(currentUser.profile_id?.email);
-    } else if (currentUser) {
+      // setUsername(currentUser.username);
+      // setFirstName(currentUser.first_name); 
+      // setLastName(currentUser.last_name);
+      // setEmail(currentUser.email);
+      // if no email
+
+      console.log("HUI");
+      if (!currentUser.email) {
+        console.log("NO EMAIL")
+      }
+    }
+    if (currentUser) {
       // Call `fetchData` if there is an `id` present and it's not the current user's profile
       fetchData();
     } else {
@@ -93,7 +108,8 @@ const UsernameForm = () => {
           email: email,
           username: username,
         }
-      }));
+      })
+      );
       history.goBack();
     } catch (err) {
       console.error("Error submitting form:", err);

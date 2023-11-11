@@ -49,6 +49,7 @@ function ProfilePage() {
 
   const [profile] = pageProfile.results;
   const is_owner = currentUser?.username === profile?.owner;
+  console.log("profile", profile)
  
 
   useEffect(() => {
@@ -71,10 +72,12 @@ function ProfilePage() {
     };
     fetchData();
   }, [id, setProfileData]);
+  
 
   const mainProfile = (
     <>
       {profile?.is_owner && <ProfileEditDropdown id={profile?.id} />}
+
       <Row noGutters className="px-3 text-center">
         <Col lg={3} className="text-lg-left">
           <Image
@@ -85,7 +88,6 @@ function ProfilePage() {
         </Col>
         <Col lg={6}>
           <h3 className="m-2">{profile?.owner}</h3>
-          {/* <h4 className="m-2">{ profile?.first_name }</h4> */}
           <Row className="justify-content-center no-gutters">
             <Col xs={3} className="my-2">
               <div>{profile?.posts_count}</div>

@@ -5,7 +5,7 @@ Beta-P5 is a social media platform dedicated to showcasing a unique private coll
 
 
 ## NavBar.js
-![Description](../Beta-P5/src/media/navbar.png)
+![Description](/src/styles/documentation/navbar.png)
 * AS illustrated above you can clearly see displayed the logo on the left side and the icon to add a post.
 * From the middle of the screen movie to the right you can see all the set of icon
     - Home
@@ -36,21 +36,33 @@ Beta-P5 is a social media platform dedicated to showcasing a unique private coll
 
       both have the only scope to do what it says.
 
-![devises reponsive](../Beta-P5/src/media/profile.png)
-![Description](../Beta-P5/src/media/profile.png)
+![Description](/src/styles/documentation/profile.png)
+![Description](src/styles/documentation/createpost.png)
 
 
 # Getting Started
 To begin interacting with the platform, users need to sign up. Once registered, they can delve into the world of vintage wine making, book visits, post images with captions, and engage with other members through likes and comments.
-![Description](../Beta-P5/src/media/home.png)
-![Description](../Beta-P5/src/media/signin.png)
-![Description](../Beta-P5/src/media/signuo.png)
-![Description](../Beta-P5/src/media/homeaftersign.png)
-![Description](../Beta-P5/src/media/createpost.png)
-![Description](../Beta-P5/src/media/liked.page.png)
+![Description](/src/styles/documentation/home.png)
+![Description](/src/styles/documentation/signin.png)
+![Description](/src/documentation/signuo.png)
+![Description](/src/styles/documentation/homeaftersign.png)
+![Description](/src/styles/documentation/createpost.png)
+![Description](/src/styles/documentation/liked.page.png)
 
 
-![Description](../Beta-P5/src/media/home.png)
+![Description](/src/styles/documentation/home.png)
+
+### Structure 
+React is based on components. So within the display view, many components can make up the whole. See the [Features](#features) section for screenshots of the below components in action, along with the wire-frame for a simple sketch of how they look.
+- Navigation Bar - This will feature throughout the entire site, staying consistent for the user.
+- Most Followed Accounts - Most Followed Accounts section will appear on every page (except the add/edit post page), below the navbar (on mobile/small screen devices) or to the right of the post(s) (on larger screens/desktops).
+- Post (when in Home, Feed and Profile pages) - Each post will appear displaying the Image, Title, Travel Type and Summary, along with the Like icon and count, Comment Icon and count and the Bookmark Icon to save the bookmark. It will not display the main content of the post. On the Feed and Discover pages, the page has an Infinite Scroll feature that means more posts can be loaded without pagination (only if there are more than 10 posts on a page).
+- Post (once clicked into the post or clicking on the comment button) - Within the individual post page, the Post will now include the main content of the post, where the owner of the post can write more content for their post.
+- Comments - The comments section only appears on the individual post page, where users can now interact with the post and share their views with the owner of the post publicly. This has Infinite Scroll, which loads older comments as you scroll down (only if there are more than 10 comments on a post).
+- Edit Post Dropdown - This dropdown menu will display on each post where there are current logged in user is the owner of the post on screen.
+- Edit Profile Dropdown - This dropdown menu allows the user to edit the profile details (username, password & bio) only if the current logged in user is the owner of the profile in view.
+- Visiting - this will be a page where the user is able to create a booking choosing date, tour section, time slot, number of people.
+- Visiting delete - the user will be able to create and delete his booking as his need.
 
 # Features
 
@@ -72,16 +84,16 @@ To begin interacting with the platform, users need to sign up. Once registered, 
 
 - Upon successful booking, users receive a confirmation message along  with a delete button, allowing them to cancel their reservation if necessary.
 
-![Description](../Beta-P5/src/styles/media/bookingform.png)
+![Description](/src/styles/documentation/bookingform.png)
 ![Description](../Beta-P5/src/styles/media/ourservice.png)
 
 # Validations
   All of my validation are effected by the  lockdown error I will explain it later on my file.
-  ![Description](../Beta-P5/src/styles/media/lockdown.png)
+  ![Description](/src/styles/documentation/lockdown.png)
 
-  ![Description](../Beta-P5/src/styles/media/validationBooking.png)
-  ![Description](../Beta-P5/src/styles/media/validationhome.png)
-  ![Description](../Beta-P5/src/styles/media/validation.liked.png)
+  ![Description](/src/styles/documentation/validationBooking.png)
+  ![Description](/src/styles/documentation/validationhome.png)
+  ![Description](/src/styles/documentation/validation.liked.png)
 
 ## Technology 
 
@@ -103,10 +115,10 @@ I had a session with the mentor the 27/09 and he suggested me to ask help to the
 Once the tutor took a look he sent me some screenshot where it didn’t have the warning.
 
 
-![Description](../Beta-P5/src/styles/media/lockdownerror.png)
+![Description](/src/styles/documentation/lockdownerror.png)
  - In the screenshot above is the warning a get on my device.
 
 
 
-![Description](../Beta-P5/src/styles/media/lockweeor.png)
+![Description](/src/styles/documentation/lockweeor.png)
  - In this one is the console of the tutor once after have created an account and try to post or booked a visit.
