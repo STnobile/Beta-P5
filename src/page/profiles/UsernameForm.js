@@ -21,13 +21,14 @@ const UsernameForm = () => {
   const [username, setUsername] = useState("");
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
+  const [sending, setSending] = useState(false);
+  
   const [errors, setErrors] = useState({});
 
   const history = useHistory();
   // console.log(history);
   const { id } = useParams();
-   console.log("IDDDDDDDDDDDDDDD: ", id)
+  //  console.log("IDDDDDDDDDDDDDDD: ", id)
   // console.log({ id });
 
   const currentUser = useCurrentUser();
@@ -37,85 +38,101 @@ const UsernameForm = () => {
 
 
   useEffect(() => {
-    // Define `fetchData` inside `useEffect` to capture the current `id`
-    const fetchData = async () => {
-      try {
-        const response = await axiosRes.get(`/dj-rest-auth/user/`);
-        const userData = response.data;
-        console.log(userData)
-
-        setUsername(userData.username);
-        console.log(userData.username)
-        setFirstName(userData.first_name); 
-        console.log(userData.first_name)
-        setLastName(userData.last_name);
-        
-        setEmail(userData.email);
-        if (!currentUser.email) {
-          console.log("NO EMAIL")
-        }
-        console.log("email",userData.email)
-      } catch (error) {
-        // Error handling here
-        console.error("Failed to fetch user data:", error);
-      }
-    };
-
     if (currentUser?.profile_id?.toString() === id) {
-      // setUsername(currentUser.username);
-      // setFirstName(currentUser.first_name); 
-      // setLastName(currentUser.last_name);
-      // setEmail(currentUser.email);
-      // if no email
-
-      console.log("HUI");
-      if (!currentUser.email) {
-        console.log("NO EMAIL")
-      }
-    }
-    if (currentUser) {
-      // Call `fetchData` if there is an `id` present and it's not the current user's profile
-      fetchData();
+      setUsername(currentUser.username);
+      setFirstName(currentUser.first_name); // Set first_name
+      setLastName(currentUser.last_name);   // Set last_name
     } else {
-      // Redirect to the homepage if there is no `id`
       history.push("/");
     }
-  }, [currentUser, id, history]); 
+  }, [currentUser, history, id]);
+
+  const handleSubmit = async (event) => {
+    setSending(true);
+    event.preventDefault();
+    try {
+      await axiosRes.put("/dj-rest-auth/user/", {
+        username,
+        first_name: firstName, // Include first_name
+        last_name: lastName,   // Include last_name
+      });
+      setCurrentUser((prevUser) => ({
+        ...prevUser,
+        username,
+        first_name: firstName, // Update state
+        last_name: lastName,   // Update state
+      }));
+      history.goBack();
+    } catch (err) {
+      setErrors(err.response?.data);
+    }
+    setSending(false);
+  };
+
+  // useEffect(() => {
+  //   // Define `fetchData` inside `useEffect` to capture the current `id`
+  //   const fetchData = async () => {
+  //     try {
+  //       const response = await axiosRes.get(`/dj-rest-auth/user/`);
+  //       const userData = response.data;
+  //       console.log(userData)
+
+  //       setUsername(currentUser.username)
+      
+  //       setFirstName(userData.first_name); 
+  //       console.log(userData.first_name)
+      
+  //       setLastName(userData.last_name);
+  //       console.log(userData.last_name)
+      
+  //     } catch (error) {
+  //       // Error handling here
+  //       console.error("Failed to fetch user data:", error);
+  //     }
+  //   };
+
+  //   if (currentUser?.profile_id?.toString() === id) {
+  //      setUsername(currentUser.username);
+      
+  //     // Call `fetchData` if there is an `id` present and it's not the current user's profile
+  //     fetchData();
+  //   } else {
+  //     // Redirect to the homepage if there is no `id`
+  //     history.push("/");
+  //   } 
+  // }, [currentUser, id, history]); 
 
   
 
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    console.log("Submitting the form with the following values:");
-    console.log("First Name:", firstName);
-    console.log("Last Name:", lastName);
-    console.log("Email:", email);
-    console.log("Username:", username);
+  // const handleSubmit = async (event) => {
+  //   event.preventDefault();
+  //   console.log("Submitting the form with the following values:");
+  //   console.log("First Name:", firstName);
+  //   console.log("Last Name:", lastName);
+  //   console.log("Username:", username);
 
-    try {
-      const response = await axiosRes.put(`/dj-rest-auth/user/`, {
-        first_name: firstName,
-        last_name: lastName,
-        email: email,
-        username: username,
-      });
-      console.log("Response data:", response.data);
-      setCurrentUser((prevUser) => ({
-        ...prevUser,
-        profile: {
-          ...prevUser.profile,
-          email: email,
-          username: username,
-        }
-      })
-      );
-      history.goBack();
-    } catch (err) {
-      console.error("Error submitting form:", err);
-      setErrors(err.response?.data || {});
-    }
-  };
+  //   try {
+  //     const response = await axiosRes.put(`/dj-rest-auth/user/`, {
+  //       first_name: firstName,
+  //       last_name: lastName,
+  //       username: username,
+  //     });
+  //     console.log("Response data:", response.data);
+  //     setCurrentUser((prevUser) => ({
+  //       ...prevUser,
+  //       profile: {
+  //         ...prevUser.profile,
+  //         username,
+  //       }
+  //     })
+  //     );
+  //     history.goBack();
+  //   } catch (err) {
+  //     console.error("Error submitting form:", err);
+  //     setErrors(err.response?.data || {});
+  //   }
+  // };
 
 
   return (
@@ -152,20 +169,7 @@ const UsernameForm = () => {
                 {message}
               </Alert>
             ))}
-            <Form.Group>
-              <Form.Label>Email</Form.Label>
-              <Form.Control
-                placeholder="Email"
-                type="email" 
-                value={email}
-                onChange={(event) => setEmail(event.target.value)}
-              />
-            </Form.Group>
-            {errors?.email?.map((message, idx) => (
-              <Alert key={idx} variant="warning">
-                {message}
-              </Alert>
-            )) }
+            
             <Form.Group>
               <Form.Label>Change Username</Form.Label>
               <Form.Control
@@ -187,11 +191,12 @@ const UsernameForm = () => {
               >
                 Cancel
               </Button>
-              <Button
+              <Button 
+                disabled={sending} 
                 className={`${btnStyles.Button} ${btnStyles.Blue}`}
                 type="submit"
               >
-                Save
+                {sending ? "Sending..." : "Save"}
               </Button>
             </div>
           </Form>

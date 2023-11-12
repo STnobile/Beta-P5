@@ -104,6 +104,10 @@ React is based on components. So within the display view, many components can ma
  ### Acknowledgments
 The project was inspired by the walkthrough projects from the Code Institute. It has been adapted to cater to the needs of the family museum.
 
+## Front-end Credits 
+The code for the frontend of this project was inspired by the fantastic walkthrough project conducted by the Team. Was the perfect grounding for my project to build.
+
+
 # Errors
 
 all the website work fine.

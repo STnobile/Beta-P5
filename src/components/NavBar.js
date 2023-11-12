@@ -12,6 +12,7 @@ import axios from "axios";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
 
+
 const NavBarIcon = ({ iconClass, label, link }) => (
   <NavLink
     className={styles.NavLink}
@@ -52,7 +53,7 @@ const NavBar = () => {
       await axios.post("dj-rest-auth/logout/");
       setCurrentUser();
       removeTokenTimestamp();
-      localStorage.removeItem('token'); // or sessionStorage.removeItem('token');
+      localStorage.removeItem('token');
     } catch (err) {
       console.error("Error during sign out:", err);
       alert('Failed to sign out. Please try again.');
@@ -72,13 +73,14 @@ const NavBar = () => {
         }}
         alignRight
       >
-        <NavDropdown.Item as={NavLink} to={`/profiles/${currentUser.profile_id}`}><i className="fas fa-user"></i>Profile</NavDropdown.Item>
+        <NavDropdown.Item as={NavLink} to={`/profiles/${currentUser.profile_id}`} activeClassName="active"><i className="fas fa-user"></i>Profile</NavDropdown.Item>
         <NavDropdown.Item as={NavLink} to="/feed"><i className="fas fa-stream"></i>Feed</NavDropdown.Item>
         <NavDropdown.Item as={NavLink} to="/liked"><i className="fas fa-heart"></i>Liked</NavDropdown.Item>
         <NavDropdown.Item as={NavLink} to="/visiting"><i className="fa-solid fa-calendar-day"></i>Booking</NavDropdown.Item>
         <NavDropdown.Divider />
-        <NavDropdown.Item as={NavLink} to="/" onClick={handleSignOut}><i className="fa-solid fa-door-closed"></i>Sign Out</NavDropdown.Item>
-      </NavDropdown>
+        <NavDropdown.Item as={NavLink} to="/" onClick={handleSignOut} activeClassName="active-link"><i className="fa-solid fa-door-closed"></i>Sign Out</NavDropdown.Item>
+     </NavDropdown>
+      
     );
   }
 
