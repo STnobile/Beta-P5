@@ -21,8 +21,10 @@ function PostEditForm() {
     title: "",
     content: "",
     image: "",
+    summary: "",
   });
-  const { title, content, image } = postData;
+
+  const { title, content,  summary, image } = postData;
 
   const imageInput = useRef(null);
   const history = useHistory();
@@ -32,9 +34,9 @@ function PostEditForm() {
     const handleMount = async () => {
       try {
         const { data } = await axiosReq.get(`/posts/${id}/`);
-        const { title, content, image, is_owner } = data;
+        const { title, content, image, summary, is_owner } = data;
 
-        is_owner ? setPostData({ title, content, image }) : history.push("/");
+        is_owner ? setPostData({ title, content, summary, image }) : history.push("/");
       } catch (err) {
         console.log(err);
       }
@@ -66,6 +68,7 @@ function PostEditForm() {
 
     formData.append("title", title);
     formData.append("content", content);
+    formData.append("summary", summary);
 
     if (imageInput?.current?.files[0]) {
       formData.append("image", imageInput.current.files[0]);
@@ -94,6 +97,20 @@ function PostEditForm() {
         />
       </Form.Group>
       {errors?.title?.map((message, idx) => (
+        <Alert variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+      <Form.Group>
+        <Form.Label>Caption</Form.Label>
+        <Form.Control
+          type="text"
+          name="summary"
+          value={summary}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      {errors?.summary?.map((message, idx) => (
         <Alert variant="warning" key={idx}>
           {message}
         </Alert>

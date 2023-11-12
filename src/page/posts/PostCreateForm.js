@@ -42,10 +42,13 @@ function PostPreview({ postData, onEdit, onSubmit }) {
         </Media>
       </Card.Body>
       <Link to="#">
-        <Card.Img src={postData.image} alt={postData.title} />
+      <div class="d-flex justify-content-center">
+        <Card.Img class="img-fluid" style={{ width:'30%' }} src={postData.image} alt={postData.title} />
+        </div>
       </Link>
       <Card.Body>
         {postData.title && <Card.Title className="text-center">{postData.title}</Card.Title>}
+        {postData.summary && <Card.Title className="text-center">{postData.summary}</Card.Title>}
         {postData.content && <Card.Text className="text-center">{postData.content}</Card.Text>}
       </Card.Body>
     </Card >
@@ -62,8 +65,9 @@ function PostCreateForm() {
     title: "",
     content: "",
     image: "",
+    summary: "",
   });
-  const { title, content, image } = postData;
+  const { title, content, image, summary } = postData;
 
   const [imageFile, setImageFile] = useState(null);
 
@@ -95,6 +99,8 @@ function PostCreateForm() {
 
     formData.append('title', title);
     formData.append('content', content);
+    formData.append("summary", summary);
+
 
     if (imageFile) {
       formData.append('image', imageFile);
@@ -130,6 +136,20 @@ function PostCreateForm() {
         />
       </Form.Group>
       {errors?.title?.map((message, idx) => (
+        <Alert variant="warning" key={idx}>
+          {message}
+        </Alert>
+      ))}
+      <Form.Group>
+        <Form.Label>Caption</Form.Label>
+        <Form.Control
+          type="text"
+          name="summary"
+          value={summary}
+          onChange={handleChange}
+        />
+      </Form.Group>
+      {errors?.summary?.map((message, idx) => (
         <Alert variant="warning" key={idx}>
           {message}
         </Alert>

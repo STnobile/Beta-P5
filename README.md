@@ -3,21 +3,25 @@
 ## Description.
 Beta-P5 is a social media platform dedicated to showcasing a unique private collection detailing wine making before the advent of electricity. The platform allows users to immerse themselves in the rich history, share their experiences in the form of images and stories, and interact with a community of like-minded enthusiasts. After a physical visit to the museum, users can share their stories and experiences with the community.
 
+## Feature 
 
-## NavBar.js
+### NavBar.js
 ![Description](/src/styles/documentation/navbar.png)
-* AS illustrated above you can clearly see displayed the logo on the left side and the icon to add a post.
-* From the middle of the screen movie to the right you can see all the set of icon
-    - Home
-       - In this section the user will find the story of the the Museo, below that it will star the list of post.
-    - Feed 
-    - Liked 
-      - Both {feed and liked} works very similar, they display the likes the user have put on the post and the feed are the post the user has posted.
-    - Booking
-    - Sign Out 
-    - Profile 
+- Navigation Bar. This allows the user to navigate consistently throughout the site. The Nav Bar will show two different sets of icons depending on whether the user is logged in or logged out. 
+  - When the user is logged in, the following icons will show:
+      - Add (add a post)
+      - Home  (see all posts uploaded, with most recent appearing first)
+      - Profile ( with the Avatar on his left side), the profile will have a      dropdown menu with the following 
+        link:
+      ![Description](/src/styles/documentation/profile.drop.png)
+       - Profile
+       - Feed (see the posts from users that I follow)
+       - Liked
+       - Booking
+       - Sign Out  
+  
 
-  #  Profile 
+  ### Profile 
    - In here you can see the page dedicated to the user wit different 
    section:
 
@@ -37,7 +41,14 @@ Beta-P5 is a social media platform dedicated to showcasing a unique private coll
       both have the only scope to do what it says.
 
 ![Description](/src/styles/documentation/profile.png)
+![Description](/src/styles/documentation/addpost.png)
 ![Description](src/styles/documentation/createpost.png)
+
+### Feed 
+
+- This is where the users can see all the posts from the user's they follow. It has all the same features of the Discover Page, but is filtered by the profiles that you follow. Users can only see the ba
+
+![Description](src/styles/documentation/feed.png)
 
 
 # Getting Started
@@ -49,6 +60,10 @@ To begin interacting with the platform, users need to sign up. Once registered, 
 ![Description](/src/styles/documentation/createpost.png)
 ![Description](/src/styles/documentation/liked.page.png)
 
+- When the user is logged out, the following icons will show:
+    - Home
+    - Sign In
+    - Sign Up
 
 ![Description](/src/styles/documentation/home.png)
 
@@ -63,6 +78,10 @@ React is based on components. So within the display view, many components can ma
 - Edit Profile Dropdown - This dropdown menu allows the user to edit the profile details (username, password & bio) only if the current logged in user is the owner of the profile in view.
 - Visiting - this will be a page where the user is able to create a booking choosing date, tour section, time slot, number of people.
 - Visiting delete - the user will be able to create and delete his booking as his need.
+
+## Wireframe
+![Description](/src/styles/documentation/wireframe.png)
+
 
 # Features
 

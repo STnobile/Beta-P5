@@ -17,6 +17,7 @@ const Post = (props) => {
     likes_count,
     like_id,
     title,
+    summary,
     content,
     image,
     updated_at,
@@ -72,7 +73,7 @@ const Post = (props) => {
       }),
      }));
     } catch(err){
-     console.log(err);
+    //  console.log(err);
     }
   };
 
@@ -95,10 +96,12 @@ const Post = (props) => {
         </Media>
       </Card.Body>
       <Link to={`/posts/${id}`}>
-        <Card.Img src={image} alt={title} />
+      <div class="d-flex justify-content-center">
+        <Card.Img class="img-fluid" style={{ width: '80%' }} src={image} alt={title} /> </div>
       </Link>
       <Card.Body>
         {title && <Card.Title className="text-center">{title}</Card.Title>}
+        {summary && <Card.Text className="text-center">{summary}</Card.Text>}
         {content && <Card.Text>{content}</Card.Text>}
         <div className={styles.PostBar}>
           {is_owner ? (
