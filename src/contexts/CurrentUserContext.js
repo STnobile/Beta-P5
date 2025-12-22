@@ -2,6 +2,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import axios from "axios";
 import { axiosReq, axiosRes } from "../api/axiosDefaults";
 import { useHistory } from "react-router";
+import { shouldRefreshToken } from "../utils/utils";
 
 export const CurrentUserContext = createContext();
 export const SetCurrentUserContext = createContext();
@@ -29,6 +30,7 @@ export const CurrentUserProvider = ({ children }) => {
   useEffect(() => {
     const requestInterceptor = axiosReq.interceptors.request.use(
       async (config) => {
+        if (!shouldRefreshToken()) return config;
         try {
           await axios.post("/dj-rest-auth/token/refresh/");
         } catch (err) {
@@ -51,6 +53,15 @@ export const CurrentUserProvider = ({ children }) => {
       (response) => response,
       async (err) => {
         if (err.response?.status === 401) {
+          if (!shouldRefreshToken()) {
+            setCurrentUser((prevCurrentUser) => {
+              if (prevCurrentUser) {
+                history.push("/signin");
+              }
+              return null;
+            });
+            return Promise.reject(err);
+          }
           try {
             await axios.post("/dj-rest-auth/token/refresh/");
           } catch (err) {

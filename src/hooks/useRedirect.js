@@ -1,4 +1,5 @@
 import { axiosReq } from "../api/axiosDefaults";
+import { shouldRefreshToken } from "../utils/utils";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
@@ -8,6 +9,7 @@ export const useRedirect = (userAuthStatus) => {
  useEffect(() => {
     const handleMount = async () => {
         try {
+            if (!shouldRefreshToken()) return;
             await axiosReq.post('/dj-rest-auth/token/refresh/');
             // if user is logged in, the code below will run
             if (userAuthStatus === 'loggedIn') {

@@ -118,6 +118,9 @@ function BookingForm() {
             ? totalCapacity + booking.num_of_people
             : totalCapacity
         , 0);
+    const remainingCapacity = date && time
+        ? maxCapacity - calculateCurrentCapacity(date, time)
+        : maxCapacity;
 
 
     const handleBookingSubmit = async e => {
@@ -274,6 +277,11 @@ function BookingForm() {
                                     </option>
                                 ))}
                             </Form.Control>
+                            {!!time && !!date && (
+                                <div className={styles.InfoText}>
+                                    Remaining spots: {Math.max(remainingCapacity, 0)}
+                                </div>
+                            )}
                         </Form.Group>
 
                         <Form.Group controlId="num_of_people">
@@ -301,7 +309,7 @@ function BookingForm() {
                         <Button
                             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
-                            disabled={!date || !time || !tourSection}
+                            disabled={!date || !time || !tourSection || remainingCapacity <= 0 || numOfPeople > remainingCapacity}
                         >
                             Submit Booking
                         </Button>

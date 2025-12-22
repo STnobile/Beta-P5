@@ -6,6 +6,7 @@ import { Link, useHistory } from "react-router-dom";
 import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
+import noResults from "../../assets/no-results.png";
 
 const Post = (props) => {
   const {
@@ -95,7 +96,17 @@ const Post = (props) => {
       </Card.Body>
       <Link to={`/posts/${id}`}>
       <div className="d-flex justify-content-center">
-        <Card.Img className="img-fluid" style={{ width: '80%' }} src={image} alt={title} /> </div>
+        <Card.Img
+          className="img-fluid"
+          style={{ width: '80%' }}
+          src={image || noResults}
+          alt={title}
+          onError={(event) => {
+            event.target.onerror = null;
+            event.target.src = noResults;
+          }}
+        />
+      </div>
       </Link>
       <Card.Body>
         {title && <Card.Title className="text-center">{title}</Card.Title>}
