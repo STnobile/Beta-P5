@@ -39,7 +39,6 @@ export const ProfileDataProvider = ({ children }) => {
         },
       }));
     } catch (err) {
-      console.log(err);
     }
   };
 
@@ -62,7 +61,6 @@ export const ProfileDataProvider = ({ children }) => {
         },
       }));
     } catch (err) {
-      console.log("Error during unfollow:", err.response ? err.response.data : err.message);
     }
   };
 
@@ -77,7 +75,6 @@ export const ProfileDataProvider = ({ children }) => {
           popularProfiles: data,
         }));
       } catch (err) {
-        console.log(err);
       }
     };
 

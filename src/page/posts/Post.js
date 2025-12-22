@@ -35,10 +35,9 @@ const Post = (props) => {
 
   const handleDelete = async () => {
     try {
-     await axiosRes.delete(`/posts/${id}`);
+     await axiosRes.delete(`/posts/${id}/`);
      history.goBack();
     } catch (err) {
-       console.log(err);
     }
   };
 
@@ -57,7 +56,6 @@ const Post = (props) => {
         }),
       }));
     } catch(err){
-     console.log(err)
     }
   };
 
@@ -96,8 +94,8 @@ const Post = (props) => {
         </Media>
       </Card.Body>
       <Link to={`/posts/${id}`}>
-      <div class="d-flex justify-content-center">
-        <Card.Img class="img-fluid" style={{ width: '80%' }} src={image} alt={title} /> </div>
+      <div className="d-flex justify-content-center">
+        <Card.Img className="img-fluid" style={{ width: '80%' }} src={image} alt={title} /> </div>
       </Link>
       <Card.Body>
         {title && <Card.Title className="text-center">{title}</Card.Title>}

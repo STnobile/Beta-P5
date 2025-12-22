@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
-import axios from 'axios';
+import React, { useState, useEffect, useMemo, useRef } from 'react';
 import { useCurrentUser } from '../contexts/CurrentUserContext';
 import Form from 'react-bootstrap/Form';
 
@@ -7,9 +6,11 @@ import Button from 'react-bootstrap/Button';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import { Link } from 'react-router-dom';
 import styles from '../styles/BookingForm.module.css';
 import appStyles from '../App.module.css';
 import btnStyles from "../styles/Button.module.css";
+import { axiosReq } from '../api/axiosDefaults';
 
 
 const getDatePlusDay = days => {
@@ -20,7 +21,7 @@ const getDatePlusDay = days => {
 
 function BookingForm() {
     const [formSubmitted, setFormSubmitted] = useState(true);
-    const [date, setDate] = useState(getDatePlusDay(0));
+    const [date, setDate] = useState('');
     const [time, setTime] = useState('');
     const [numOfPeople, setNumOfPeople] = useState(1);
     const [bookings, setBookings] = useState([]);
@@ -28,11 +29,13 @@ function BookingForm() {
     const [chosenDateTime, setChosenDateTime] = useState(null);
     const maxCapacity = 28;
     const currentUser = useCurrentUser();
+    const previousBookingsRef = useRef(null);
 
-    const isOwnerOfBooking = booking => booking.owner_id === currentUser.id;
+    const isOwnerOfBooking = booking => currentUser && booking.owner_id === currentUser.id;
 
-    // Define userBookings here
-    const userBookings = bookings.filter(booking => isOwnerOfBooking(booking));
+    const userBookings = currentUser
+        ? bookings.filter(booking => isOwnerOfBooking(booking))
+        : [];
 
     const [tourSection, setTourSection] = useState('');
 
@@ -42,7 +45,7 @@ function BookingForm() {
 
     const loadBookings = async () => {
         try {
-            const response = await axios.get('/visiting/');
+            const response = await axiosReq.get('/visiting/');
             setBookings(response.data.results);
             saveBookingsToLocal(response.data.results); // Save to local storage
         } catch (err) {
@@ -56,7 +59,7 @@ function BookingForm() {
     
         const fetchBookings = async () => {
             try {
-                const response = await axios.get('/visiting/');
+                const response = await axiosReq.get('/visiting/');
                 if (isMounted) { // Only update state if component is mounted
                     setBookings(response.data.results);
                 }
@@ -89,6 +92,12 @@ function BookingForm() {
             });
     }, []);
 
+    useEffect(() => {
+        if (!allowedDays.length) return;
+        if (!allowedDays.includes(date)) {
+            setDate(allowedDays[0]);
+        }
+    }, [allowedDays, date]);
 
     const TOUR_SECTIONS = [
         ['Museum', 'Museum'],
@@ -116,7 +125,6 @@ function BookingForm() {
 
         // Reset form submitted state when starting a new submission
         setError('');
-        console.log('Submitting booking form with:', { date, time, numOfPeople, tourSection });
         try {
             const currentCapacity = calculateCurrentCapacity(date, time);
             if (currentCapacity + numOfPeople <= maxCapacity) {
@@ -127,30 +135,25 @@ function BookingForm() {
                     tour_section: tourSection,
                     // Add other necessary fields here
                 };
-                console.log('Attempting to create booking with data:', bookingData);
                 // Create a new booking
-                const response = await axios.post('/visiting/', bookingData);
+                const response = await axiosReq.post('/visiting/', bookingData);
                 if (response.status === 201) { // Check if the booking was created successfully (201 Created)
                     // Reset fields and load bookings
-                    setDate(getDatePlusDay(0));
+                    setDate(allowedDays[0] || '');
                     setTime('');
                     setNumOfPeople(1);
                     setTourSection('');
                     await loadBookings(); // Make sure to await the loading of bookings.
                     setChosenDateTime(`${date} ${time}`);
                     setFormSubmitted(true);
-                     console.log('Booking created successfully:', response.data);
                 } else {
                     setError('Failed to create the booking.');
-                    console.log('Unexpected status code:', response.status);
                 }
             } else {
                 setError('The selected time slot is fully booked.');
-                // console.log('Current capacity exceeds max capacity.');
             }
         } catch (err) {
-            console.error('Error processing booking:', err);
-            setError('Error processing booking. Please try again.');
+            setError(err.response?.data?.error || 'Error processing booking. Please try again.');
         } finally {
             // Optional reset of formSubmitted state
             // setFormSubmitted(false);
@@ -162,6 +165,7 @@ function BookingForm() {
         if (isConfirmed) {
             // Make a copy of the current bookings for potential rollback
             setBookings(prevBookings => {
+                previousBookingsRef.current = prevBookings;
                 const newBookings = prevBookings.filter(booking => booking.id !== bookingId);
                 // Persist the optimistic update immediately
                 saveBookingsToLocal(newBookings);
@@ -170,24 +174,41 @@ function BookingForm() {
             });
     
             try {
-                const response = await axios.delete(`/visiting/${bookingId}/`);
+                const response = await axiosReq.delete(`/visiting/${bookingId}/`);
                 if (!(response.status === 200 || response.status === 204)) {
                     // If the deletion was not successful, throw an error to catch it below
                     throw new Error('Deletion was not successful.');
                 }
             } catch (error) {
                 // If an error occurs, rollback to the previous bookings
-                setBookings(prevBookings => {
-                    // You must retrieve the previous bookings from local storage or other persistent storage
-                    const storedBookings = localStorage.getItem('userBookings');
-                    const rolledBackBookings = storedBookings ? JSON.parse(storedBookings) : prevBookings;
-                    return rolledBackBookings;
-                });
+                const rollbackBookings = previousBookingsRef.current || [];
+                setBookings(rollbackBookings);
+                saveBookingsToLocal(rollbackBookings);
                 setError('Error deleting booking. Please try again.');
             }
         }
     };
     
+
+    if (!currentUser) {
+        return (
+            <Row className={styles.Row}>
+                <Col className="my-auto p-0 p-md-2" md={6}>
+                    <Container className={`${appStyles.Content} p-4`}>
+                        <h1 className={styles.Header}>Book a Visit</h1>
+                        <p>Please sign in to book a visit.</p>
+                        <Button
+                            as={Link}
+                            to="/signin"
+                            className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
+                        >
+                            Sign in
+                        </Button>
+                    </Container>
+                </Col>
+            </Row>
+        );
+    }
 
     return (
         <Row className={styles.Row}>
@@ -280,6 +301,7 @@ function BookingForm() {
                         <Button
                             className={`${btnStyles.Button} ${btnStyles.Wide} ${btnStyles.Bright}`}
                             type="submit"
+                            disabled={!date || !time || !tourSection}
                         >
                             Submit Booking
                         </Button>

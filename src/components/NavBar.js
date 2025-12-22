@@ -8,7 +8,7 @@ import styles from "../styles/NavBar.module.css";
 import { NavLink } from "react-router-dom";
 import { useCurrentUser, useSetCurrentUser } from "../contexts/CurrentUserContext";
 import Avatar from "./Avatar";
-import axios from "axios";
+import { axiosReq } from "../api/axiosDefaults";
 import useClickOutsideToggle from "../hooks/useClickOutsideToggle";
 import { removeTokenTimestamp } from "../utils/utils";
 
@@ -50,12 +50,11 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     try {
-      await axios.post("dj-rest-auth/logout/");
+      await axiosReq.post("dj-rest-auth/logout/");
       setCurrentUser();
       removeTokenTimestamp();
       localStorage.removeItem('token');
     } catch (err) {
-      console.error("Error during sign out:", err);
       alert('Failed to sign out. Please try again.');
     }
   };

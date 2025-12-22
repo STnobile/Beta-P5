@@ -21,6 +21,7 @@ import PopularProfiles from "../profiles/PopularProfiles";
 function PostsPage({ message, filter = "" }) {
   const [posts, setPosts] = useState({ results: [] });
   const [hasLoaded, setHasLoaded] = useState(false);
+  const [error, setError] = useState("");
   const {pathname} = useLocation();
 
   const [query, setQuery] = useState("");
@@ -37,13 +38,14 @@ function PostsPage({ message, filter = "" }) {
         }
       } catch (err) {
         if (isMounted) {
-          
+          setError("Something went wrong while loading posts.");
+          setHasLoaded(true);
         }
-        console.log(err);
       }
     };
   
     setHasLoaded(false);
+    setError("");
     const timer = setTimeout(() => {
       fetchPosts();
     }, 1000);
@@ -74,7 +76,11 @@ function PostsPage({ message, filter = "" }) {
 
         {hasLoaded ? (
           <>
-            {posts.results.length ? (
+            {error ? (
+              <Container className={appStyles.Content}>
+                <Asset message={error} />
+              </Container>
+            ) : posts.results.length ? (
               <InfiniteScroll
                 children={posts.results.map((post) => (
                   <Post key={post.id} {...post} setPosts={setPosts} />
