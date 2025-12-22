@@ -42,8 +42,8 @@ function PostPreview({ postData, onEdit, onSubmit }) {
         </Media>
       </Card.Body>
       <Link to="#">
-      <div class="d-flex justify-content-center">
-        <Card.Img class="img-fluid" style={{ width:'30%' }} src={postData.image} alt={postData.title} />
+      <div className="d-flex justify-content-center">
+        <Card.Img className="img-fluid" style={{ width:'30%' }} src={postData.image} alt={postData.title} />
         </div>
       </Link>
       <Card.Body>
