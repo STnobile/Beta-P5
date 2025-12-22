@@ -1,4 +1,4 @@
-import axios from "axios";
+import { axiosReq } from "../api/axiosDefaults";
 import { useEffect } from "react";
 import { useHistory } from "react-router";
 
@@ -8,7 +8,7 @@ export const useRedirect = (userAuthStatus) => {
  useEffect(() => {
     const handleMount = async () => {
         try {
-            await axios.post('/dj-rest-auth/token/refresh/');
+            await axiosReq.post('/dj-rest-auth/token/refresh/');
             // if user is logged in, the code below will run
             if (userAuthStatus === 'loggedIn') {
                 history.push('/');

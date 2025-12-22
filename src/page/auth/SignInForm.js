@@ -39,7 +39,7 @@ function SignInForm() {
       setTokenTimestamp(data);
       history.goBack();
     } catch (err) {
-      setErrors(err.response?.data);
+      setErrors(err.response?.data || {});
     }
   };
 
