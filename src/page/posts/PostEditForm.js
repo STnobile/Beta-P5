@@ -74,6 +74,7 @@ function PostEditForm() {
     }
 
     try {
+      await axiosReq.get('/dj-rest-auth/csrf/');
       await axiosReq.put(`/posts/${id}/`, formData);
       history.push(`/posts/${id}`);
     } catch (err) {

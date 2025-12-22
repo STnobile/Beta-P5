@@ -114,6 +114,7 @@ function PostCreateForm() {
     }
 
     try {
+      await axiosReq.get('/dj-rest-auth/csrf/');
       await axiosReq.post('/posts/', formData);
       history.push(`/`);
     } catch (err) {
