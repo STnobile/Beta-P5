@@ -17,6 +17,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import Asset from "../../components/Asset";
 import { fetchMoreData } from "../../utils/utils";
 import PopularProfiles from "../profiles/PopularProfiles";
+import ErrorBanner from "../../components/ErrorBanner";
 
 function PostPage() {
   const { id } = useParams();
@@ -55,7 +56,7 @@ function PostPage() {
           <Asset spinner />
         ) : error ? (
           <Container className={appStyles.Content}>
-            <Asset message={error} />
+            <ErrorBanner message={error} />
           </Container>
         ) : (
           <>

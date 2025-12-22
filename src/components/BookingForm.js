@@ -11,6 +11,7 @@ import styles from '../styles/BookingForm.module.css';
 import appStyles from '../App.module.css';
 import btnStyles from "../styles/Button.module.css";
 import { axiosReq } from '../api/axiosDefaults';
+import ErrorBanner from './ErrorBanner';
 
 
 const getDatePlusDay = days => {
@@ -220,7 +221,7 @@ function BookingForm() {
                     <>
                         <h1 className={styles.Header}>Book a Visit</h1>
                     </>
-                    {error && <p className="text-danger">{error}</p>}
+                    <ErrorBanner message={error} />
                     <Form onSubmit={handleBookingSubmit}>
                         <Form.Group controlId="date">
                             <Form.Label>Date:</Form.Label>

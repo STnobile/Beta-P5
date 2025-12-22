@@ -12,6 +12,7 @@ import appStyles from "../../App.module.css";
 import styles from "../../styles/PostsPage.module.css";
 import { useLocation } from "react-router";
 import { axiosReq } from "../../api/axiosDefaults";
+import ErrorBanner from "../../components/ErrorBanner";
 
 import NoResults from "../../assets/no-results.png";
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -28,15 +29,20 @@ function PostsPage({ message, filter = "" }) {
 
   useEffect(() => {
     let isMounted = true; // This will keep track of whether the component is still mounted
+    const controller = new AbortController();
   
     const fetchPosts = async () => {
       try {
-        const { data } = await axiosReq.get(`/posts/?${filter}search=${query}`);
+        const { data } = await axiosReq.get(
+          `/posts/?${filter}search=${query}`,
+          { signal: controller.signal }
+        );
         if (isMounted) { // Only update the state if the component is still mounted
           setPosts(data);
           setHasLoaded(true);
         }
       } catch (err) {
+        if (err.code === "ERR_CANCELED") return;
         if (isMounted) {
           setError("Something went wrong while loading posts.");
           setHasLoaded(true);
@@ -52,6 +58,7 @@ function PostsPage({ message, filter = "" }) {
   
     return () => {
       clearTimeout(timer);
+      controller.abort();
       isMounted = false; 
     };
   }, [filter, query, pathname]);
@@ -78,7 +85,7 @@ function PostsPage({ message, filter = "" }) {
           <>
             {error ? (
               <Container className={appStyles.Content}>
-                <Asset message={error} />
+                <ErrorBanner message={error} />
               </Container>
             ) : posts.results.length ? (
               <InfiniteScroll
