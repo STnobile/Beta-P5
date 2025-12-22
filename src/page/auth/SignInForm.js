@@ -34,6 +34,7 @@ function SignInForm() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      await axiosReq.get("/dj-rest-auth/csrf/");
       const { data } = await axiosReq.post("/dj-rest-auth/login/", signInData);
       setCurrentUser(data.user);
       setTokenTimestamp(data);

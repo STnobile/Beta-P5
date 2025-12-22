@@ -40,6 +40,7 @@ const SignUpForm = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {
+      await axiosReq.get("/dj-rest-auth/csrf/");
       await axiosReq.post("/dj-rest-auth/registration/", signUpData);
       history.push("/signin");
     } catch (err) {

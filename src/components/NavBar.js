@@ -50,6 +50,7 @@ const NavBar = () => {
 
   const handleSignOut = async () => {
     try {
+      await axiosReq.get("dj-rest-auth/csrf/");
       await axiosReq.post("dj-rest-auth/logout/");
       setCurrentUser();
       removeTokenTimestamp();
