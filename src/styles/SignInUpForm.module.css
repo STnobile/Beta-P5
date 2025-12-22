@@ -1,25 +1,25 @@
 .Row {
     height: calc(100vh - 81px);
   }
-  .Input {
-    background: #ffffff;
-    border: 1px solid #f0f1f9;
+.Input {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(31, 27, 22, 0.15);
     box-sizing: border-box;
-    border-radius: 2px;
-    color: #7177a1;
+    border-radius: 16px;
+    color: var(--ink);
     text-align: center;
     padding: 10px;
   }
   
-  .Header {
+.Header {
     font-style: normal;
     font-weight: bold;
-    font-size: 16px;
+    font-size: 18px;
     line-height: 19px;
     text-align: center;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     text-transform: uppercase;
-    color: #e1d122fb;
+    color: var(--accent);
   }
   
   .Link {
@@ -29,8 +29,8 @@
     margin: auto;
   }
   
-  .Link span {
-    color: #ff9254;
+.Link span {
+    color: var(--gold);
   }
   
   .Container {

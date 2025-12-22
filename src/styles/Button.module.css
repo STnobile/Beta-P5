@@ -1,12 +1,14 @@
 .Button {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     align-self: center;
-    border-radius: 100px;
+    border-radius: 999px;
     border-color: transparent;
-    padding: 4px 10px;
+    padding: 6px 14px;
     margin-left: 2px;
     margin-right: 2px;
     min-width: 75px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
   }
   
   .Button:hover {
@@ -16,15 +18,15 @@
   }
   
   .Button:hover:active {
-    background-color: #cd6fe2 !important;
+    background-color: #8a3f2b !important;
   }
   
   .Button:active {
-    background-color: #a244b7 !important;
+    background-color: #7a2b22 !important;
   }
   
   .Button:focus {
-    background-color: #d185e2;
+    background-color: #9b4d35;
   }
   
   .Wide {
@@ -35,41 +37,41 @@
   .Blue,
   .BlueOutline:hover,
   .Bright:hover {
-    background-color: #610775;
+    background-color: var(--accent);
     color: #ffffff;
   }
   
   .BlueOutline,
   .Blue:hover {
     background-color: #ffffff;
-    color: #650b79;
+    color: var(--accent);
   }
   
   .Black,
   .BlackOutline:hover {
-    background-color: #3b4462;
-    color: aliceblue;
+    background-color: var(--accent-2);
+    color: #ffffff;
   }
   
   .Black:hover,
   .BlackOutline {
-    background-color: #dadadf;
-    color: #242a3d;
-    border-color: #242a3d;
+    background-color: #f1e7da;
+    color: var(--ink);
+    border-color: rgba(31, 27, 22, 0.25);
     /* background-color: rgb(255, 255, 255);
     color: #ffffff; */
   }
   
   .Bright {
-    background-color: #ff86ff;
+    background-color: var(--gold);
     color: #ffffff;
   }
 
 
 /*-------------------------------- BTN BOOKING*/
 .vstnBtn {
-  background-color: #fefefe; /* Purple background */
-  border: 1px solid #610775; /* Purple border */
+  background-color: #fefefe;
+  border: 1px solid var(--accent);
   padding: 0.375rem 0.75rem; /* Padding */
   border-radius: 0.25rem; /* Rounded corners */
   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out; /* Smooth transition for hover effect */
@@ -79,20 +81,20 @@
 /* Button style on hover */
 .vstnBtn:hover,
 .vstnBtnOutline:hover {
-  background-color: #ffffff; /* White background */
-  color: #650b79; /* Purple text */
-  border-color: #650b79; /* Purple border */
+  background-color: #ffffff;
+  color: var(--accent);
+  border-color: var(--accent);
 }
 
 /* Outline button style */
 .vstnBtnOutline {
-  background-color: #ffffff; /* White background */
-  color: #650b79; /* Purple text */
-  border: 1px solid #650b79; /* Purple border */
+  background-color: #ffffff;
+  color: var(--accent);
+  border: 1px solid var(--accent);
   transition: background-color 0.15s ease-in-out, color 0.15s ease-in-out; 
 }
 
 /* Outline button style on hover */
 .vstnBtnOutline:hover {
-  background-color: #ffffff; /* Purple background */
+  background-color: #ffffff;
 }

@@ -1,6 +1,5 @@
 .App{
-  font-family: 'IBM Plex Sans', sans-serif;
-  background-color: #fbfbfb;
+  font-family: "Manrope", "Helvetica Neue", Arial, sans-serif;
   min-height: 100vh;
 }
 
@@ -9,10 +8,12 @@
 }
 
 .Content {
-  background-color: #ffffff;
-  padding: 10px;
-  border-radius: 2px;
-  border: 3px solid #000000;
+  background-color: var(--surface);
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(31, 27, 22, 0.08);
+  box-shadow: var(--shadow);
+  animation: fadeUp 0.4s ease;
 }
 
 .FillerImage {
@@ -25,7 +26,8 @@
   max-height: 40vh;
   max-width: 100%;
   object-fit: contain;
-  border: 1px solid black;
+  border: 1px solid rgba(31, 27, 22, 0.2);
+  border-radius: 14px;
 }
 
 * {
@@ -33,13 +35,13 @@
 }
 
 a {
-  color: rgb(94, 119, 53);
+  color: var(--accent-2);
   transition: color ease-in-out 0.3s;
 }
 
 a:hover{
   text-decoration: none;
-  color: rgb(183, 136, 16);
+  color: var(--accent);
   transition: color ease-in-out 0.3s;
 }
 
@@ -48,16 +50,27 @@ input[type="file"] {
 }
 
 i {
-  color: rgba(175, 58, 221, 0.637);
-  font-size: 1.6rem;
-  padding: 7px;
+  color: var(--accent);
+  font-size: 1.4rem;
+  padding: 6px;
   vertical-align: middle;
 }
 
 i:hover {
   cursor: pointer;
   transition: color ease-in-out 0.3s;
-  color: rgb(97, 16, 129);
+  color: var(--gold);
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 figure {

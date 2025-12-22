@@ -1,13 +1,13 @@
 .Form {
     border: none;
-    border-bottom: 2px #5a1490 solid;
+    border-bottom: 2px solid var(--accent);
 }
   
 .Button {
     border: none;
-    background-color: #242a3d;
-    color: aliceblue;
-    border-radius: 100px;
+    background-color: var(--accent-2);
+    color: #ffffff;
+    border-radius: 999px;
     padding: 4px 10px;
     min-width: 75px;
     margin: 5px;
@@ -15,6 +15,6 @@
 
 .Button:hover {
     cursor: pointer;
-    background-color: aliceblue;
-    color: #242a3d;
+    background-color: #f3e9db;
+    color: var(--ink);
 }

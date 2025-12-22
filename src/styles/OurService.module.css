@@ -3,7 +3,7 @@
 }
 
 .title h3 {
-    color: rgb(255, 127, 80);
+    color: var(--accent);
     font-size: 32px;
     width: 100%;
     margin: 30px auto;
@@ -21,12 +21,14 @@
 .cardService {
     width: 300px;
     height: 355px;
-    background: rgb(255, 255, 255);
+    background: rgba(255, 255, 255, 0.95);
     position: relative;
     margin: 15px;
     border-radius: 30px;
     overflow: hidden;
     text-align: center;
+    border: 1px solid rgba(31, 27, 22, 0.08);
+    box-shadow: var(--shadow);
 }
 
 .cardService i {
@@ -34,17 +36,17 @@
     display: block;
     text-align: center;
     margin: 25px 0px;
-    color: rgb(255, 127, 80);
+    color: var(--gold);
 }
 
 .footerH4 { 
-    color: rgb(0, 0, 0);
+    color: var(--ink);
     margin-bottom: 15px;
     font-size: 22px;
 }
 
 .contService p {
-    color: rgb(80, 78, 78);
+    color: var(--muted);
     margin-bottom: 25px;
     font-size: 15px;
     font-weight: bold;

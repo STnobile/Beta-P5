@@ -1,9 +1,17 @@
 .Post {
-    background-color: #ffffff;
-    border: 1px solid #dadadf;
-    border-radius: 2px;
-    margin-bottom: 16px;
+    background-color: var(--surface);
+    border: 1px solid rgba(31, 27, 22, 0.08);
+    border-radius: 18px;
+    margin-bottom: 20px;
     text-align: center;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+
+  .Post:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 22px 46px rgba(27, 20, 15, 0.18);
   }
   
   .Post figure,
@@ -12,13 +20,13 @@
   }
   
   .Heart {
-    color: #f85032;
+    color: var(--accent);
   }
   
   .Heart:hover {
-    color: #a84ee0;
+    color: var(--gold);
   }
   
   .HeartOutline:hover {
-    color: #f85032;
+    color: var(--accent);
   }

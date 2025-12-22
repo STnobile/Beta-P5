@@ -1,18 +1,22 @@
 .SearchBar input {
-    border-radius: 20px;
-    color: #242a3d;
-    padding-left: 40px;
+    border-radius: 999px;
+    color: var(--ink);
+    padding-left: 44px;
     margin-bottom: 16px;
+    border: 1px solid rgba(31, 27, 22, 0.15);
+    background: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 10px 20px rgba(31, 27, 22, 0.08);
   }
   
   .SearchIcon {
     position: absolute;
-    font-size: 1.2rem;
-    padding: 9px;
-    padding-left: 15px;
+    font-size: 1.1rem;
+    padding: 10px;
+    padding-left: 16px;
+    color: var(--muted);
   }
   
   .SearchIcon:hover {
     cursor: default;
-    color: #400968;
+    color: var(--accent);
   }

@@ -22,9 +22,12 @@
     min-height: 120px; /* Set minimum height to 120px as per .Asset styles */
     width: 50%; /* Take up half the screen width */
     padding: 15px; /* Space between content and border */
-    border: 5px solid #333; /* Border acting as frame */
+    border: 2px solid rgba(31, 27, 22, 0.2);
     margin: 20px; /* Space around the frame */
     overflow: hidden;
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: var(--shadow);
 }
 
 .image {
@@ -36,4 +39,5 @@
   .text {
     font-size: 1rem;
     text-align: center;
+    color: var(--muted);
 }
