@@ -24,6 +24,9 @@ const Comment = (props) => {
   const [showEditForm, setShowEditForm] = useState(false);
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
+  const displayProfileImage = is_owner
+    ? currentUser?.profile_image || profile_image
+    : profile_image;
 
   const handleDelete = async () => {
     try {
@@ -49,7 +52,7 @@ const Comment = (props) => {
       <hr />
       <Media>
         <Link to={`/profiles/${profile_id}`}>
-          <Avatar src={profile_image} />
+          <Avatar src={displayProfileImage} />
         </Link>
         <Media.Body className="align-self-center ml-2">
           <span className={styles.Owner}>{owner}</span>
@@ -59,7 +62,7 @@ const Comment = (props) => {
               id={id}
               profile_id={profile_id}
               content={content}
-              profileImage={profile_image}
+              profileImage={displayProfileImage}
               setComments={setComments}
               setShowEditForm={setShowEditForm}
             />

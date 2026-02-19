@@ -28,6 +28,9 @@ const Post = (props) => {
 
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
+  const displayProfileImage = is_owner
+    ? currentUser?.profile_image || profile_image
+    : profile_image;
   const history = useHistory();
 
   const handleEdit = () => {
@@ -81,7 +84,7 @@ const Post = (props) => {
       <Card.Body>
         <Media className="align-items-center justify-content-between">
           <Link to={`/profiles/${profile_id}`}>
-            <Avatar src={profile_image} height={45} />
+            <Avatar src={displayProfileImage} height={45} />
             {owner}
           </Link>
           <div className="d-flex align-items-center">
