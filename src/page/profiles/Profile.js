@@ -13,6 +13,9 @@ const Profile = (props) => {
 
     const currentUser = useCurrentUser();
     const is_owner = currentUser?.username === owner;
+    const displayImage = is_owner
+        ? currentUser?.profile_image || image
+        : image;
 
     const { handleFollow, handleUnfollow } = useSetProfileData();
 
@@ -23,7 +26,7 @@ const Profile = (props) => {
         >
             <div>
                 <Link className="align-self-center" to={`/profiles/${id}`}>
-                    <Avatar src={image} height={imageSize} />
+                    <Avatar src={displayImage} height={imageSize} />
                 </Link>
             </div>
             <div className={`mx-2 ${styles.WordBreak}`}>
