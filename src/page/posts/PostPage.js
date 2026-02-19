@@ -86,7 +86,14 @@ function PostPage() {
                   dataLength={comments.results.length}
                   loader={<Asset spinner />}
                   hasMore={!!comments.next}
-                  next={() => fetchMoreData(comments, setComments)}
+                  next={() =>
+                    fetchMoreData(
+                      comments,
+                      setComments,
+                      setError,
+                      "Something went wrong while loading more comments."
+                    )
+                  }
                 />
               ) : currentUser ? (
                 <span>No comments yet, be the first to comment!</span>

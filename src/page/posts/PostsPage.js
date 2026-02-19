@@ -26,6 +26,18 @@ function PostsPage({ message, filter = "" }) {
   const {pathname} = useLocation();
 
   const [query, setQuery] = useState("");
+  const isFeed = pathname === "/feed";
+  const isLiked = pathname === "/liked";
+  const pageTitle = isFeed
+    ? "Your Feed"
+    : isLiked
+      ? "Liked Stories"
+      : "Museum Stories";
+  const pageSubtitle = isFeed
+    ? "Latest posts from people you follow."
+    : isLiked
+      ? "Posts you have appreciated most."
+      : "Discover moments shared by the community.";
 
   useEffect(() => {
     let isMounted = true; // This will keep track of whether the component is still mounted
@@ -64,22 +76,27 @@ function PostsPage({ message, filter = "" }) {
   }, [filter, query, pathname]);
 
   return (
-    <Row className="h-100">
-      <Col className="py-2 p-0 p-lg-2" lg={8}>
+    <Row className={`h-100 ${styles.PageRow}`}>
+      <Col className={`py-2 p-0 p-lg-2 ${styles.MainCol}`} lg={8}>
         <PopularProfiles mobile />
-        <i className={`fas fa-search ${styles.SearchIcon}`} />
-        <Form
-          className={styles.SearchBar}
-          onSubmit={(event) => event.preventDefault()}
-        >
-          <Form.Control
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            type="text"
-            className="mr-sm-2"
-            placeholder="Search posts"
-          />
-        </Form>
+        <Container className={`${appStyles.Content} ${styles.HeaderPanel}`}>
+          <h1 className={styles.PageTitle}>{pageTitle}</h1>
+          <p className={styles.PageSubtitle}>{pageSubtitle}</p>
+          <i className={`fas fa-search ${styles.SearchIcon}`} />
+          <Form
+            className={styles.SearchBar}
+            onSubmit={(event) => event.preventDefault()}
+          >
+            <Form.Control
+              value={query}
+              onChange={(event) => setQuery(event.target.value)}
+              type="text"
+              className="mr-sm-2"
+              placeholder="Search posts by title or summary"
+              aria-label="Search posts"
+            />
+          </Form>
+        </Container>
 
         {hasLoaded ? (
           <>
@@ -88,15 +105,24 @@ function PostsPage({ message, filter = "" }) {
                 <ErrorBanner message={error} />
               </Container>
             ) : posts.results.length ? (
-              <InfiniteScroll
-                children={posts.results.map((post) => (
-                  <Post key={post.id} {...post} setPosts={setPosts} />
-                ))}
-                dataLength={posts.results.length}
-                loader={<Asset spinner />}
-                hasMore={!!posts.next}
-                next={() => fetchMoreData(posts, setPosts)}
-              />
+              <div className={styles.FeedList}>
+                <InfiniteScroll
+                  children={posts.results.map((post) => (
+                    <Post key={post.id} {...post} setPosts={setPosts} />
+                  ))}
+                  dataLength={posts.results.length}
+                  loader={<Asset spinner />}
+                  hasMore={!!posts.next}
+                  next={() =>
+                    fetchMoreData(
+                      posts,
+                      setPosts,
+                      setError,
+                      "Something went wrong while loading more posts."
+                    )
+                  }
+                />
+              </div>
             ) : (
               <Container className={appStyles.Content}>
                 <Asset src={NoResults} message={message} />
@@ -109,7 +135,7 @@ function PostsPage({ message, filter = "" }) {
           </Container>
         )}
       </Col>
-      <Col md={4} className="d-none d-lg-block p-0 p-lg-2">
+      <Col md={4} className={`d-none d-lg-block p-0 p-lg-2 ${styles.SideCol}`}>
         <PopularProfiles />
       </Col>
     </Row>

@@ -8,6 +8,8 @@ import CommentEditForm from "./CommentEditForm";
 import styles from "../../styles/Comment.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { axiosRes } from "../../api/axiosDefaults";
+import ErrorBanner from "../../components/ErrorBanner";
+import { getErrorMessage } from "../../utils/utils";
 
 const Comment = (props) => {
   const {
@@ -22,6 +24,7 @@ const Comment = (props) => {
   } = props;
 
   const [showEditForm, setShowEditForm] = useState(false);
+  const [actionError, setActionError] = useState("");
   const currentUser = useCurrentUser();
   const is_owner = currentUser?.username === owner;
   const displayProfileImage = is_owner
@@ -29,6 +32,7 @@ const Comment = (props) => {
     : profile_image;
 
   const handleDelete = async () => {
+    setActionError("");
     try {
       await axiosRes.delete(`/comments/${id}`);
       setPost((prevPost  => ({
@@ -44,7 +48,9 @@ const Comment = (props) => {
         ...prevComments,
         results: prevComments.results.filter((comment) => comment.id !== id),
       }));
-    } catch (err) {}
+    } catch (err) {
+      setActionError(getErrorMessage(err, "Couldn't delete this comment. Please try again."));
+    }
   };
 
   return (
@@ -57,6 +63,7 @@ const Comment = (props) => {
         <Media.Body className="align-self-center ml-2">
           <span className={styles.Owner}>{owner}</span>
           <span className={styles.Date}>{updated_at}</span>
+          <ErrorBanner message={actionError} />
           {showEditForm ? (
             <CommentEditForm
               id={id}

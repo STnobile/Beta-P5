@@ -1,7 +1,45 @@
 import jwtDecode from "jwt-decode";
 import { axiosReq } from "../api/axiosDefaults"
 
-export const fetchMoreData = async (resource, setResource) => {
+export const getErrorMessage = (
+  err,
+  fallback = "Something went wrong. Please try again."
+) => {
+  const responseData = err?.response?.data;
+  if (!responseData) return fallback;
+
+  if (typeof responseData === "string") {
+    return responseData;
+  }
+
+  if (typeof responseData.detail === "string") {
+    return responseData.detail;
+  }
+
+  if (typeof responseData.error === "string") {
+    return responseData.error;
+  }
+
+  if (Array.isArray(responseData.non_field_errors) && responseData.non_field_errors.length) {
+    return responseData.non_field_errors[0];
+  }
+
+  const firstFieldError = Object.values(responseData).find(
+    (value) => Array.isArray(value) && value.length
+  );
+  if (firstFieldError) {
+    return firstFieldError[0];
+  }
+
+  return fallback;
+};
+
+export const fetchMoreData = async (
+  resource,
+  setResource,
+  setError,
+  fallbackErrorMessage
+) => {
   try {
     const { data } = await axiosReq.get(resource.next);
     setResource((prevResource) => ({
@@ -13,7 +51,11 @@ export const fetchMoreData = async (resource, setResource) => {
           : [...acc, cur];
       }, prevResource.results),
     }));
-  } catch (err) { }
+  } catch (err) {
+    if (setError) {
+      setError(getErrorMessage(err, fallbackErrorMessage));
+    }
+  }
 };
 
 export const followHelper = (profile, clickedProfile, following_id) => {

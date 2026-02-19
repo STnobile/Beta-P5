@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef } from 'react';
+import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { useCurrentUser } from '../contexts/CurrentUserContext';
 import Form from 'react-bootstrap/Form';
 
@@ -12,12 +12,17 @@ import appStyles from '../App.module.css';
 import btnStyles from "../styles/Button.module.css";
 import { axiosReq } from '../api/axiosDefaults';
 import ErrorBanner from './ErrorBanner';
+import { getErrorMessage } from '../utils/utils';
 
 
 const getDatePlusDay = days => {
     const date = new Date();
     date.setDate(date.getDate() + days);
     return date.toISOString().slice(0, 10);
+};
+
+const saveBookingsToLocal = (bookings) => {
+    localStorage.setItem('userBookings', JSON.stringify(bookings));
 };
 
 function BookingForm() {
@@ -40,43 +45,31 @@ function BookingForm() {
 
     const [tourSection, setTourSection] = useState('');
 
-    const saveBookingsToLocal = (bookings) => {
-        localStorage.setItem('userBookings', JSON.stringify(bookings));
-    };
-
-    const loadBookings = async () => {
+    const loadBookings = useCallback(async ({ shouldUpdate = () => true } = {}) => {
         try {
             const response = await axiosReq.get('/visiting/');
+            if (!shouldUpdate()) return false;
             setBookings(response.data.results);
-            saveBookingsToLocal(response.data.results); // Save to local storage
+            saveBookingsToLocal(response.data.results);
+            return true;
         } catch (err) {
-            setError('Error loading bookings. Please try again later.');
+            if (shouldUpdate()) {
+                setError(getErrorMessage(err, 'Error loading bookings. Please try again later.'));
+            }
+            return false;
         }
-    };
+    }, []);
     
 
     useEffect(() => {
         let isMounted = true; // Flag to indicate the mounted status
     
-        const fetchBookings = async () => {
-            try {
-                const response = await axiosReq.get('/visiting/');
-                if (isMounted) { // Only update state if component is mounted
-                    setBookings(response.data.results);
-                }
-            } catch (err) {
-                if (isMounted) {
-                    setError('Error loading bookings. Please try again later.');
-                }
-            }
-        };
-    
-        fetchBookings();
+        loadBookings({ shouldUpdate: () => isMounted });
     
         return () => {
             isMounted = false;
         };
-    }, []);
+    }, [loadBookings]);
 
     const allowedDays = useMemo(() => {
         return [...Array(10).keys()]
@@ -147,7 +140,7 @@ function BookingForm() {
                     setTime('');
                     setNumOfPeople(1);
                     setTourSection('');
-                    await loadBookings(); // Make sure to await the loading of bookings.
+                    await loadBookings();
                     setChosenDateTime(`${date} ${time}`);
                     setFormSubmitted(true);
                 } else {
@@ -157,7 +150,7 @@ function BookingForm() {
                 setError('The selected time slot is fully booked.');
             }
         } catch (err) {
-            setError(err.response?.data?.error || 'Error processing booking. Please try again.');
+            setError(getErrorMessage(err, 'Error processing booking. Please try again.'));
         } finally {
             // Optional reset of formSubmitted state
             // setFormSubmitted(false);
@@ -196,11 +189,11 @@ function BookingForm() {
 
     if (!currentUser) {
         return (
-            <Row className={styles.Row}>
-                <Col className="my-auto p-0 p-md-2" md={6}>
-                    <Container className={`${appStyles.Content} p-4`}>
+            <Row className={styles.PageRow}>
+                <Col className="my-auto p-0 p-md-2" lg={7}>
+                    <Container className={`${appStyles.Content} ${styles.Panel}`}>
                         <h1 className={styles.Header}>Book a Visit</h1>
-                        <p>Please sign in to book a visit.</p>
+                        <p className={styles.SubHeader}>Please sign in to book a museum visit.</p>
                         <Button
                             as={Link}
                             to="/signin"
@@ -215,14 +208,15 @@ function BookingForm() {
     }
 
     return (
-        <Row className={styles.Row}>
-            <Col className="my-auto p-0 p-md-2" md={6}>
-                <Container className={`${appStyles.Content} p-4`}>
-                    <>
-                        <h1 className={styles.Header}>Book a Visit</h1>
-                    </>
+        <Row className={styles.PageRow}>
+            <Col className="p-0 p-md-2" lg={7}>
+                <Container className={`${appStyles.Content} ${styles.Panel}`}>
+                    <h1 className={styles.Header}>Book a Visit</h1>
+                    <p className={styles.SubHeader}>
+                        Pick your date, tour section, time slot, and visitor count.
+                    </p>
                     <ErrorBanner message={error} />
-                    <Form onSubmit={handleBookingSubmit}>
+                    <Form onSubmit={handleBookingSubmit} className={styles.BookingForm}>
                         <Form.Group controlId="date">
                             <Form.Label>Date:</Form.Label>
                             <Form.Control
@@ -292,7 +286,7 @@ function BookingForm() {
                                 min={1}
                                 max={28}
                                 value={numOfPeople}
-                                onChange={(e) => setNumOfPeople(parseInt(e.target.value))}
+                                onChange={(e) => setNumOfPeople(parseInt(e.target.value, 10))}
                                 required
                             />
                             <div className={styles.InfoText}>Selected: {numOfPeople} people</div>
@@ -315,8 +309,11 @@ function BookingForm() {
                             Submit Booking
                         </Button>
                     </Form>
-                    <hr />
-
+                </Container>
+            </Col>
+            <Col className="p-0 p-md-2" lg={5}>
+                <Container className={`${appStyles.Content} ${styles.Panel}`}>
+                    <h2 className={styles.SectionTitle}>Your Bookings</h2>
                     {formSubmitted && userBookings.length > 0 ? (
                         <div className="table-responsive">
                             <table className={styles.BookingTable}>
@@ -330,7 +327,7 @@ function BookingForm() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {userBookings.map(booking => (
+                                    {userBookings.map((booking) => (
                                         <tr key={booking.id}>
                                             <td>{booking.date}</td>
                                             <td>{booking.time_slot}</td>
@@ -339,7 +336,7 @@ function BookingForm() {
                                             <td>
                                                 <Button
                                                     className={`${btnStyles.vstnBtn} ${btnStyles.vstnBtnOutline}`}
-                                                    name='delete'
+                                                    name="delete"
                                                     onClick={() => handleDelete(booking.id)}
                                                     aria-label="Delete booking"
                                                 >
@@ -351,17 +348,13 @@ function BookingForm() {
                                 </tbody>
                             </table>
                         </div>
-                    ) : formSubmitted && userBookings.length === 0 ? (
-                        // This will be rendered if formSubmitted is true but there are no bookings
-                        <div>No bookings available.</div>
                     ) : (
-                        // This will be rendered if formSubmitted is false
-                        <div>No bookings have been submitted.</div>
+                        <div className={styles.EmptyState}>No bookings available yet.</div>
                     )}
 
                     {chosenDateTime && (
-                        <div className="alert alert-success" role="alert">
-                            Your booking for {chosenDateTime} has been successfully submitted!
+                        <div className={`alert alert-success ${styles.SuccessAlert}`} role="alert">
+                            Your booking for {chosenDateTime} has been successfully submitted.
                         </div>
                     )}
                 </Container>

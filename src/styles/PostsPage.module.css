@@ -1,22 +1,68 @@
+.PageRow {
+  align-items: flex-start;
+}
+
+.MainCol {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.SideCol {
+  position: sticky;
+  top: 86px;
+}
+
+.HeaderPanel {
+  position: relative;
+  padding: 20px 18px;
+  margin-bottom: 8px;
+}
+
+.PageTitle {
+  margin: 0 0 4px;
+  font-size: clamp(1.4rem, 2vw, 1.85rem);
+}
+
+.PageSubtitle {
+  margin: 0 0 14px;
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
 .SearchBar input {
-    border-radius: 999px;
-    color: var(--ink);
-    padding-left: 44px;
-    margin-bottom: 16px;
-    border: 1px solid rgba(31, 27, 22, 0.15);
-    background: rgba(255, 255, 255, 0.85);
-    box-shadow: 0 10px 20px rgba(31, 27, 22, 0.08);
+  border-radius: 999px;
+  color: var(--ink);
+  padding-left: 44px;
+  margin-bottom: 0;
+  border: 1px solid rgba(31, 27, 22, 0.15);
+  background: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 10px 20px rgba(31, 27, 22, 0.08);
+  height: 46px;
+}
+
+.SearchIcon {
+  position: absolute;
+  font-size: 1rem;
+  left: 26px;
+  bottom: 30px;
+  color: var(--muted);
+  z-index: 1;
+}
+
+.SearchIcon:hover {
+  cursor: default;
+  color: var(--accent);
+}
+
+.FeedList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+@media (max-width: 991px) {
+  .HeaderPanel {
+    margin-bottom: 4px;
   }
-  
-  .SearchIcon {
-    position: absolute;
-    font-size: 1.1rem;
-    padding: 10px;
-    padding-left: 16px;
-    color: var(--muted);
-  }
-  
-  .SearchIcon:hover {
-    cursor: default;
-    color: var(--accent);
-  }
+}

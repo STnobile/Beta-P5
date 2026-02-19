@@ -5,13 +5,14 @@ import { Image } from 'react-bootstrap';
 
 function MuseoVini() {
     return (
-        <div className={styles.container}>
+        <section className={styles.container}>
             <div className={styles.imageBox}>
                 <Image src={background} alt="entrance of Image" className={styles.image} />
             </div>
 
             <div className={styles.textBox}>
                 <div className={styles.text}>
+                    <h1 className={styles.title}>A Living Museum of Sicilian Winemaking</h1>
                     <p>
                         Nobile collection consisting of 120 pieces recognized by the superintendence
                         of cultural heritage of exceptional ethno-anthropological interest.
@@ -27,7 +28,7 @@ function MuseoVini() {
                         with 8 half-sarma barrels each and in all he carried 4 sarme and he bought and sold carts.</p>
                 </div>
             </div>
-        </div>
+        </section>
     );
 }
 

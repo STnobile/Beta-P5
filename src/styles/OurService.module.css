@@ -1,54 +1,63 @@
 .service {
-    width: 100%;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.title {
+  margin: 10px 0 14px;
 }
 
 .title h3 {
-    color: var(--accent);
-    font-size: 32px;
-    width: 100%;
-    margin: 30px auto;
-    text-align: center;
+  color: var(--accent);
+  font-size: clamp(1.4rem, 2vw, 1.9rem);
+  margin: 0;
+  text-align: center;
+}
+
+.title p {
+  margin: 6px auto 0;
+  max-width: 680px;
+  color: var(--muted);
+  text-align: center;
 }
 
 .boxCardService {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    min-height: 400px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
 }
 
 .cardService {
-    width: 300px;
-    height: 355px;
-    background: rgba(255, 255, 255, 0.95);
-    position: relative;
-    margin: 15px;
-    border-radius: 30px;
-    overflow: hidden;
-    text-align: center;
-    border: 1px solid rgba(31, 27, 22, 0.08);
-    box-shadow: var(--shadow);
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 20px;
+  text-align: center;
+  border: 1px solid rgba(31, 27, 22, 0.08);
+  box-shadow: var(--shadow);
+  padding: 18px 14px;
 }
 
 .cardService i {
-    font-size: 50px;
-    display: block;
-    text-align: center;
-    margin: 25px 0px;
-    color: var(--gold);
+  font-size: 2.2rem;
+  display: block;
+  margin: 2px 0 10px;
+  color: var(--gold);
 }
 
-.footerH4 { 
-    color: var(--ink);
-    margin-bottom: 15px;
-    font-size: 22px;
+.footerH4 {
+  color: var(--ink);
+  margin-bottom: 8px;
+  font-size: 1.2rem;
 }
 
 .contService p {
-    color: var(--muted);
-    margin-bottom: 25px;
-    font-size: 15px;
-    font-weight: bold;
-    margin: 1rem;
+  color: var(--muted);
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 991px) {
+  .boxCardService {
+    grid-template-columns: 1fr;
+  }
 }

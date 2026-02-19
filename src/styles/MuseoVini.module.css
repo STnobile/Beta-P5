@@ -1,43 +1,54 @@
 .container {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    padding-top: 81px;
-}
-
-@media (max-width: 768px) {
-    .container {
-        flex-direction: column;
-    }
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  align-items: stretch;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .imageBox,
 .textBox {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 120px; /* Set minimum height to 120px as per .Asset styles */
-    width: 50%; /* Take up half the screen width */
-    padding: 15px; /* Space between content and border */
-    border: 2px solid rgba(31, 27, 22, 0.2);
-    margin: 20px; /* Space around the frame */
-    overflow: hidden;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.9);
-    box-shadow: var(--shadow);
+  min-height: 220px;
+  padding: 14px;
+  border: 1px solid rgba(31, 27, 22, 0.12);
+  overflow: hidden;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: var(--shadow);
 }
 
 .image {
-    display: block; /* Remove any default vertical space of the image */
-    max-width: 100%; /* Make image responsive to the width of .imageBox */
-    height: auto; /* Keep the aspect ratio of the image */
+  display: block;
+  width: 100%;
+  height: 100%;
+  min-height: 330px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.text {
+  font-size: 0.95rem;
+  text-align: left;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+.title {
+  color: var(--ink);
+  margin: 2px 0 10px;
+  font-size: clamp(1.3rem, 2vw, 1.8rem);
+}
+
+.text p {
+  margin-bottom: 10px;
+}
+
+@media (max-width: 991px) {
+  .container {
+    grid-template-columns: 1fr;
   }
-  
-  .text {
-    font-size: 1rem;
-    text-align: center;
-    color: var(--muted);
+
+  .image {
+    min-height: 260px;
+  }
 }

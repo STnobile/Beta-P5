@@ -1,32 +1,84 @@
 .Post {
-    background-color: var(--surface);
-    border: 1px solid rgba(31, 27, 22, 0.08);
-    border-radius: 18px;
-    margin-bottom: 20px;
-    text-align: center;
-    box-shadow: var(--shadow);
-    overflow: hidden;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  background-color: var(--surface);
+  border: 1px solid rgba(31, 27, 22, 0.08);
+  border-radius: 18px;
+  margin-bottom: 14px;
+  text-align: center;
+  box-shadow: var(--shadow);
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.Post:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 46px rgba(27, 20, 15, 0.18);
+}
+
+.PostHeader {
+  gap: 12px;
+}
+
+.OwnerLink {
+  font-weight: 700;
+  color: var(--ink);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.UpdatedRow {
+  gap: 8px;
+}
+
+.UpdatedAt {
+  font-size: 0.82rem;
+  color: var(--muted);
+}
+
+.PostImageWrap {
+  padding: 0 18px 8px;
+}
+
+.PostImage {
+  width: 100%;
+  max-height: 440px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+.Summary {
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+
+.PostBar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+  border-top: 1px solid rgba(31, 27, 22, 0.08);
+  margin-top: 10px;
+}
+
+.Heart {
+  color: var(--accent);
+}
+
+.Heart:hover {
+  color: var(--gold);
+}
+
+.HeartOutline:hover {
+  color: var(--accent);
+}
+
+@media (max-width: 576px) {
+  .PostImageWrap {
+    padding: 0 10px 8px;
   }
 
-  .Post:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 22px 46px rgba(27, 20, 15, 0.18);
+  .Post {
+    border-radius: 14px;
   }
-  
-  .Post figure,
-  h5 {
-    margin: 0 0;
-  }
-  
-  .Heart {
-    color: var(--accent);
-  }
-  
-  .Heart:hover {
-    color: var(--gold);
-  }
-  
-  .HeartOutline:hover {
-    color: var(--accent);
-  }
+}

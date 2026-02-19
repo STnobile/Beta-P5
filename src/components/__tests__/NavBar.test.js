@@ -1,26 +1,46 @@
-import { render, screen, fireEvent } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { BrowserRouter as Router } from 'react-router-dom';
 import NavBar from "../NavBar";
-import { CurrentUserProvider } from "../../contexts/CurrentUserContext";
+import { useCurrentUser, useSetCurrentUser } from "../../contexts/CurrentUserContext";
+import { axiosReq } from "../../api/axiosDefaults";
+
+jest.mock("../../contexts/CurrentUserContext", () => ({
+  useCurrentUser: jest.fn(),
+  useSetCurrentUser: jest.fn(),
+}));
+
+jest.mock("../../api/axiosDefaults", () => ({
+  axiosReq: {
+    get: jest.fn(),
+    post: jest.fn(),
+  },
+}));
 
 test("renders NavBar", () => {
+    useCurrentUser.mockReturnValue(null);
+    useSetCurrentUser.mockReturnValue(jest.fn());
+
     render(
         <Router>
             <NavBar />
         </Router>
     );
 
-    // screen.debug();
-    const signInLink = screen.getByRole('link', {name: 'Sign In'});
+    const signInLink = screen.getByRole('link', {name: /sign in/i});
     expect(signInLink).toBeInTheDocument();
 });
 
-test("renders link to the user profile for logged in user ", async () => {
+test("renders link to the user profile for logged in user", async () => {
+    useCurrentUser.mockReturnValue({
+      profile_id: 12,
+      profile_image: "https://example.com/avatar.png",
+      username: "Dave",
+    });
+    useSetCurrentUser.mockReturnValue(jest.fn());
+
     render(
         <Router>
-            <CurrentUserProvider>
-             <NavBar />
-            </CurrentUserProvider>
+          <NavBar />
         </Router>
     );
 
@@ -29,20 +49,30 @@ test("renders link to the user profile for logged in user ", async () => {
 });
 
 test("renders Sign in and Sign up buttons again on log out", async () => {
+    const setCurrentUser = jest.fn();
+    useCurrentUser.mockReturnValue({
+      profile_id: 12,
+      profile_image: "https://example.com/avatar.png",
+      username: "Dave",
+    });
+    useSetCurrentUser.mockReturnValue(setCurrentUser);
+    axiosReq.get.mockResolvedValue({ status: 200 });
+    axiosReq.post.mockResolvedValue({ status: 200 });
+
     render(
         <Router>
-            <CurrentUserProvider>
-             <NavBar />
-            </CurrentUserProvider>
+          <NavBar />
         </Router>
     );
 
-    const signOutLink = await screen.findByRole("link", {name: "Sign Out"});
-    fireEvent.click(signOutLink)
-    
-    const signInLink = await screen.findByRole("link", {name: "Sign In"});
-    const signUpLink = await screen.findByRole("link", {name: "Sign Up"});
+    fireEvent.click(screen.getByText("Profile"));
 
-    expect(signInLink).toBeInTheDocument();
-    expect(signUpLink).toBeInTheDocument();
+    const signOutLink = await screen.findByRole("link", { name: /sign out/i });
+    fireEvent.click(signOutLink);
+
+    await waitFor(() => {
+      expect(setCurrentUser).toHaveBeenCalled();
+    });
+    expect(axiosReq.get).toHaveBeenCalledWith("dj-rest-auth/csrf/");
+    expect(axiosReq.post).toHaveBeenCalledWith("dj-rest-auth/logout/");
 });

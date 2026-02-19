@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "../../styles/Post.module.css";
 import { useCurrentUser } from "../../contexts/CurrentUserContext";
 import { Card, Media, OverlayTrigger, Tooltip } from "react-bootstrap";
@@ -7,6 +7,8 @@ import Avatar from "../../components/Avatar";
 import { axiosRes } from "../../api/axiosDefaults";
 import { MoreDropdown } from "../../components/MoreDropdown";
 import noResults from "../../assets/no-results.png";
+import ErrorBanner from "../../components/ErrorBanner";
+import { getErrorMessage } from "../../utils/utils";
 
 const Post = (props) => {
   const {
@@ -32,20 +34,24 @@ const Post = (props) => {
     ? currentUser?.profile_image || profile_image
     : profile_image;
   const history = useHistory();
+  const [actionError, setActionError] = useState("");
 
   const handleEdit = () => {
     history.push(`/posts/${id}/edit`)
   };
 
   const handleDelete = async () => {
+    setActionError("");
     try {
      await axiosRes.delete(`/posts/${id}/`);
      history.goBack();
     } catch (err) {
+      setActionError(getErrorMessage(err, "Couldn't delete this post. Please try again."));
     }
   };
 
   const handleLike = async () => {
+    setActionError("");
     try {
       // console.log("id:", id);
       const { data } = await axiosRes.post('/likes/', { post:id });
@@ -60,10 +66,12 @@ const Post = (props) => {
         }),
       }));
     } catch(err){
+      setActionError(getErrorMessage(err, "Couldn't like this post. Please try again."));
     }
   };
 
   const handleUnlike = async () => {
+    setActionError("");
     try {
      await axiosRes.delete(`/likes/${like_id}/`);
      setPosts((prevPosts) => ({
@@ -75,20 +83,20 @@ const Post = (props) => {
       }),
      }));
     } catch(err){
-    //  console.log(err);
+      setActionError(getErrorMessage(err, "Couldn't remove your like. Please try again."));
     }
   };
 
   return (
     <Card className={styles.Post}>
       <Card.Body>
-        <Media className="align-items-center justify-content-between">
-          <Link to={`/profiles/${profile_id}`}>
+        <Media className={`align-items-center justify-content-between ${styles.PostHeader}`}>
+          <Link to={`/profiles/${profile_id}`} className={styles.OwnerLink}>
             <Avatar src={displayProfileImage} height={45} />
             {owner}
           </Link>
-          <div className="d-flex align-items-center">
-            <span>{updated_at}</span>
+          <div className={`d-flex align-items-center ${styles.UpdatedRow}`}>
+            <span className={styles.UpdatedAt}>{updated_at}</span>
             {is_owner && postPage && (
             <MoreDropdown 
             handleEdit={handleEdit} 
@@ -98,10 +106,9 @@ const Post = (props) => {
         </Media>
       </Card.Body>
       <Link to={`/posts/${id}`}>
-      <div className="d-flex justify-content-center">
+      <div className={styles.PostImageWrap}>
         <Card.Img
-          className="img-fluid"
-          style={{ width: '80%' }}
+          className={`img-fluid ${styles.PostImage}`}
           src={image || noResults}
           alt={title}
           onError={(event) => {
@@ -113,8 +120,9 @@ const Post = (props) => {
       </Link>
       <Card.Body>
         {title && <Card.Title className="text-center">{title}</Card.Title>}
-        {summary && <Card.Text className="text-center">{summary}</Card.Text>}
+        {summary && <Card.Text className={styles.Summary}>{summary}</Card.Text>}
         {content && <Card.Text>{content}</Card.Text>}
+        <ErrorBanner message={actionError} />
         <div className={styles.PostBar}>
           {is_owner ? (
             <OverlayTrigger

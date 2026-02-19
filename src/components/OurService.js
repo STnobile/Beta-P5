@@ -6,6 +6,7 @@ const OurServices = () => {
         <section className={styles.service}>
             <div className={styles.title}>
                 <h3>Our Services</h3>
+                <p>Discover, explore, and preserve a unique heritage through guided museum tours.</p>
             </div>
             <div className={styles.boxCardService}>
                 <div className={styles.cardService}>
