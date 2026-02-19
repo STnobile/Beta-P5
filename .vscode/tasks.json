@@ -1,0 +1,33 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Frontend: start",
+      "type": "shell",
+      "command": "npm start",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Backend: start",
+      "type": "shell",
+      "command": "DEV=1 SECRET_KEY=devkey .venv/bin/python manage.py runserver 127.0.0.1:8000",
+      "options": {
+        "cwd": "${workspaceFolder}/def-api-rec"
+      },
+      "isBackground": true,
+      "problemMatcher": []
+    },
+    {
+      "label": "Full stack: start",
+      "dependsOn": [
+        "Backend: start",
+        "Frontend: start"
+      ],
+      "dependsOrder": "parallel"
+    }
+  ]
+}
