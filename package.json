@@ -2,6 +2,7 @@
   "name": "moments",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://stnobile.github.io/Beta-P5",
   "dependencies": {
     "16": "^0.0.2",
     "@fortawesome/free-brands-svg-icons": "^6.4.2",
@@ -27,6 +28,8 @@
     "heroku-prebuild": "npm install -g serve",
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -49,6 +52,7 @@
     ]
   },
   "devDependencies": {
+    "gh-pages": "^6.3.0",
     "msw": "^2.12.4"
   },
   "engines": {
