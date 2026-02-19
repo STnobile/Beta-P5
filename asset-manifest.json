@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.css": "/Beta-P5/static/css/main.fc2212f1.css",
+    "main.js": "/Beta-P5/static/js/main.db19882c.js",
+    "static/js/453.6096aa3e.chunk.js": "/Beta-P5/static/js/453.6096aa3e.chunk.js",
+    "static/media/logoNr.png": "/Beta-P5/static/media/logoNr.ee737b05cc296c4dd6de.png",
+    "static/media/wallwriting.jpg": "/Beta-P5/static/media/wallwriting.7f00e05d6ced83fd8d48.jpg",
+    "index.html": "/Beta-P5/index.html",
+    "main.fc2212f1.css.map": "/Beta-P5/static/css/main.fc2212f1.css.map",
+    "main.db19882c.js.map": "/Beta-P5/static/js/main.db19882c.js.map",
+    "453.6096aa3e.chunk.js.map": "/Beta-P5/static/js/453.6096aa3e.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.fc2212f1.css",
+    "static/js/main.db19882c.js"
+  ]
+}
