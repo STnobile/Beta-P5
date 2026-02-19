@@ -24,3 +24,6 @@ yarn-error.log*
 
 # local backend checkout (separate repo)
 def-api-rec/
+
+# local env
+.env
